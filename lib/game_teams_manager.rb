@@ -171,14 +171,20 @@ class GameTeamsManager
     end.to_a[0]
   end
 
+  def games_played_by_team_by_season(season, team_id)
+    games_played(team_id).select do |game_team|
+      game_team.season_id == season
+    end
+  end
+
   def total_wins_team(season, team_id)
-    games_played(team_id).count do |game_team|
+    games_played_by_team_by_season(season, team_id).count do |game_team|
       game_team.result == 'WIN'
     end.to_f
   end
 
   def avg_win_pct_season(season, team_id)
-    (total_wins_team(season, team_id) / games_played(team_id).count).round(4)
+    (total_wins_team(season, team_id) / games_played_by_team_by_season(season, team_id).count).round(4)
   end
 
   def season_win_percentage_hash(team_id)
