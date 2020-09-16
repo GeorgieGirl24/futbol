@@ -24,24 +24,8 @@ class TeamsManager
     end.team_name
   end
 
-  # def average_number_of_goals_scored_by_team(team_id)
-  #   @tracker.average_number_of_goals_scored_by_team(team_id)
-  # end
-
-  # def average_number_of_goals_scored_by_team_by_type(team_id, home_away)
-  #   @tracker.average_number_of_goals_scored_by_team_by_type(team_id, home_away)
-  # end
-
-
-
-  def find_a_team(team_id)
-    @teams.find do |team|
-      team.team_id == team_id
-    end
-  end
-
   def team_info(team_id)
-    team = find_a_team(team_id)
+    team = @teams.find { |team| team.team_id == team_id }
     team_info = {
       'team_id' => team.team_id,
       'franchise_id' => team.franchise_id,
