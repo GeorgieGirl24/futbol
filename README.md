@@ -6,6 +6,7 @@
   * [Contributors](#contributors)
   * [Technologies](#technologies)
   * [Design](#design)
+  * [Single Responsibility](#sr)
   * [Images](#images)
 
 ## Introduction
@@ -50,6 +51,18 @@ Teachers with larger classes can have teacher's assistants, who help offload som
 
 ### Module/Tutor
 All teachers have access to the tutor, who has a set of skills that all of them can utilize to help process certain functions. This is the role of the Module, who stores methods that can be access by all the managers to help execute certain functions in methods.
+
+## Single Responsibility
+- **Averageable** - Module with two shared methods that calculate averages with or without count
+- **Game-Team** - Initializes all the data for every new game-team object from the game-teams CSV
+- **Game-Team League** - Utilizes game-team data created by parent GT to execute all league statistic methods
+- **Game-Team Season** - Utilizes game-team data created by parent GT to execute all season statistic methods
+- **Game-Team Manager** - Creates all the game-teams and datasets from the CSV file to be utilize by children season and league and holds all the datasets for the team statistics
+- **StatTracker** - The hub for all data needed. Like a controller that navigates all the statistic requests and delegates appropriately.
+- **Game Manager** - Creates all the game and datasets from the CSV file and holds all the methods to execute all game statistic methods
+- **Game** - Initializes all the data for every new game object from the games CSV
+- **Team Manager** - Creates all the team and datasets from the CSV file and holds all the methods to execute the team statistic methods
+- **Team** - Initializes all the data for every new team object from the teams CSV
 
 ## Images
 Image citations can be found here: https://docs.google.com/document/d/1GrEsUKfjBDVhiVzSCZs1trcw4YmRFVTeCoHbjmDiBuE/edit
