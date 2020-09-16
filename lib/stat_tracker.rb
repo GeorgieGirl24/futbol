@@ -126,7 +126,7 @@ class StatTracker
   end
 
   def average_win_percentage(team_id)
-    @game_teams_manager.get_average_win_percentage(team_id)
+    @game_teams_manager.get_average_win_pct(team_id)
   end
 
   def most_goals_scored(team_id)
