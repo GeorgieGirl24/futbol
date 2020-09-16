@@ -30,10 +30,13 @@
   * George Soderholm
 
 ## Setup
-The following structure is based on a school analogy. In this analogy, StatTracker represents the school's principal, the Managers represent the school's teachers and the Classes represents the teacher's students.
 
+## Design
+The following design structure is based on a school analogy and is also visually represented in the image below, FB Image 1. In this analogy, StatTracker represents the school's principal, the Managers represent the school's teachers and the Classes represents the teacher's students. Additionally, each teacher has access to the teacher's assistant, who represents a Module.
+
+Our design approach in this project was to create a structure that functioned similarly to the structure of a School. Our StatTracker (Principal Tracker) oversees the entire school but directly manages all of the teachers. She receives and delegates requests to and from the teachers, Mrs. Game-Teams, Ms. Games, and Mr. Teams, for specific student information or function and knows which teacher has the correct information. Each manager handles a specific function and is responsible for loading the CSV data files needed to process and store that information. This is comparable to how teachers handle a specific subject, like math or music, and they're responsible for creating the lesson plan, assignments, and tests. This  specificvery knowledgeable of their own class
 ## Images
- 
+
 
 
 
