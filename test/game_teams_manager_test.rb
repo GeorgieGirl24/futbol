@@ -69,15 +69,17 @@ class GameTeamsManagerTest < Minitest::Test
   end
 
   def test_it_can_return_list_of_season_game_ids
-
+    season_id = '20122013'
+    expected = ["2012030221", "2012030222", "2012030223", "2012030224", "2012030225", "2012030311", "2012030312"]
+    assert_equal expected, @game_teams_manager.list_of_season_game_ids(season_id)
   end
 
   def test_it_can_make_season_win_percentage_hash
     team_id = '6'
     expected = {'20122013' => 0.8571}
     unexpected = {'20152016' => 0.8581}
-    assert_equal expected, @game_teams_manager.season_win_percentage_hash(team_id)
-    refute_equal unexpected, @game_teams_manager.season_win_percentage_hash(team_id)
+    assert_equal expected, @game_teams_manager.season_win_pct_hash(team_id)
+    refute_equal unexpected, @game_teams_manager.season_win_pct_hash(team_id)
   end
 
   def test_all_teams_for_game_id_list
