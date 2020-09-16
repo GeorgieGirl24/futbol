@@ -64,14 +64,6 @@ class GameTeamsLeagueTest < Minitest::Test
     assert_equal expected_1, @game_teams_league.avg_goals_team_type_hash(home_away)
   end
 
-  def test_it_can_return_all_goal_all_teams_hash
-
-  end
-
-  def test_it_can_return_avg_goals_team_type_hash
-
-  end
-
   def test_find_best_offense
     assert_equal '6', @game_teams_league.best_offense
   end
