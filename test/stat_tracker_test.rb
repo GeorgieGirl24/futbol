@@ -73,15 +73,6 @@ class StatTrackerTest < Minitest::Test
     assert_equal 'Sporting Kansas City', @stat_tracker.find_team_name(team_number)
   end
 
-  def test_average_number_of_goals_scored_by_team
-    assert_equal 1.5, @stat_tracker.average_number_of_goals_scored_by_team('3')
-  end
-
-  def test_average_number_of_goals_scored_by_team_by_type
-    assert_equal 1.67, @stat_tracker.average_number_of_goals_scored_by_team_by_type('3', 'away')
-    assert_equal 1.33, @stat_tracker.average_number_of_goals_scored_by_team_by_type('3', 'home')
-  end
-
   def test_find_best_offense
     assert_equal 'FC Dallas', @stat_tracker.best_offense
   end
@@ -186,5 +177,9 @@ class StatTrackerTest < Minitest::Test
   def test_team_rival
     team_id = '6'
     assert_equal 'Houston Dynamo', @stat_tracker.rival(team_id)
+  end
+
+  def test_it_can_return_list_of_season_game_ids
+
   end
 end

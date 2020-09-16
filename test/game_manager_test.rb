@@ -75,6 +75,10 @@ class GamesManagerTest < Minitest::Test
     assert_equal 4.86, @games_manager.average_goals_by_season_data(season)
   end
 
+  def test_it_can_return_list_of_season_game_ids
+
+  end
+
   def test_it_can_find_season_id
     game_id = '2012030221'
     assert_equal '20122013', @games_manager.find_season_id(game_id)

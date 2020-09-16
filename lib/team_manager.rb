@@ -24,50 +24,6 @@ class TeamsManager
     end.team_name
   end
 
-  def average_number_of_goals_scored_by_team(team_id)
-    @tracker.average_number_of_goals_scored_by_team(team_id)
-  end
-
-  def best_offense
-    @teams.max_by do |team|
-      team.average_goals
-    end.team_name
-  end
-
-  def worst_offense
-    @teams.min_by do |team|
-      team.average_goals
-    end.team_name
-  end
-
-  def average_number_of_goals_scored_by_team_by_type(team_id, home_away)
-    @tracker.average_number_of_goals_scored_by_team_by_type(team_id, home_away)
-  end
-
-  def highest_scoring_visitor
-    @teams.max_by do |team|
-      team.avg_goals_visitor
-    end.team_name
-  end
-
-  def lowest_scoring_visitor
-    @teams.min_by do |team|
-      team.avg_goals_visitor
-    end.team_name
-  end
-
-  def highest_scoring_home
-    @teams.max_by do |team|
-      team.avg_goals_home
-    end.team_name
-  end
-
-  def lowest_scoring_home
-    @teams.min_by do |team|
-      team.avg_goals_home
-    end.team_name
-  end
-
   def find_a_team(team_id)
     @teams.find do |team|
       team.team_id == team_id
@@ -75,13 +31,12 @@ class TeamsManager
   end
 
   def team_info(team_id)
-    team = find_a_team(team_id)
-    team_info = {
-      'team_id' => team.team_id,
-      'franchise_id' => team.franchise_id,
-      'team_name' => team.team_name,
-      'abbreviation' => team.abbreviation,
-      'link' => team.link
+    {
+      'team_id' => find_a_team(team_id).team_id,
+      'franchise_id' => find_a_team(team_id).franchise_id,
+      'team_name' => find_a_team(team_id).team_name,
+      'abbreviation' => find_a_team(team_id).abbreviation,
+      'link' => find_a_team(team_id).link
     }
   end
 end

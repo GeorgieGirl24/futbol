@@ -1,10 +1,13 @@
 require 'csv'
 require_relative './game_manager'
-require_relative './game_teams_manager'
 require_relative './team_manager'
+require_relative './game_teams_manager'
+require_relative './game_teams_season'
+require_relative './game_teams_league'
 
 class StatTracker
-  attr_reader :games_manager, :teams_manager, :game_teams_manager
+  attr_reader :games_manager, :teams_manager, :game_teams_manager,
+              :game_teams_season, :game_teams_league
 
   def self.from_csv(locations)
     StatTracker.new(locations)
@@ -16,8 +19,10 @@ class StatTracker
 
   def load_managers(locations)
     @games_manager = GamesManager.new(locations[:games], self)
-    @game_teams_manager = GameTeamsManager.new(locations[:game_teams], self)
     @teams_manager = TeamsManager.new(locations[:teams], self)
+    @game_teams_manager = GameTeamsManager.new(locations[:game_teams], self)
+    @game_teams_league = GameTeamsLeague.new(locations[:game_teams], self)
+    @game_teams_season = GameTeamsSeason.new(locations[:game_teams], self)
   end
 
   # Game Statistics
@@ -59,60 +64,55 @@ class StatTracker
   end
 
   def best_offense
-    @teams_manager.best_offense
+    find_team_name(@game_teams_league.best_offense)
   end
 
   def worst_offense
-    @teams_manager.worst_offense
+    find_team_name(@game_teams_league.worst_offense)
   end
 
   def highest_scoring_visitor
-    @teams_manager.highest_scoring_visitor
+    find_team_name(@game_teams_league.highest_scoring_visitor)
   end
 
   def lowest_scoring_visitor
-    @teams_manager.lowest_scoring_visitor
+    find_team_name(@game_teams_league.lowest_scoring_visitor)
   end
 
   def highest_scoring_home_team
-    @teams_manager.highest_scoring_home
+    find_team_name(@game_teams_league.highest_scoring_home)
   end
 
   def lowest_scoring_home_team
-    @teams_manager.lowest_scoring_home
+    find_team_name(@game_teams_league.lowest_scoring_home)
   end
 
   # Season Statistics
   def winningest_coach(season_id)
-    @game_teams_manager.winningest_coach(season_id)
+    @game_teams_season.winningest_coach(season_id)
   end
 
   def worst_coach(season_id)
-    @game_teams_manager.worst_coach(season_id)
+    @game_teams_season.worst_coach(season_id)
   end
 
   def most_accurate_team(season_id)
-    team_number = @game_teams_manager.most_accurate_team(season_id)
-    @teams_manager.find_team_name(team_number)
+    find_team_name(@game_teams_season.most_accurate_team(season_id))
   end
 
   def least_accurate_team(season_id)
-    team_number = @game_teams_manager.least_accurate_team(season_id)
-    @teams_manager.find_team_name(team_number)
+    find_team_name(@game_teams_season.least_accurate_team(season_id))
   end
 
   def most_tackles(season_id)
-    team_number = @game_teams_manager.most_tackles(season_id)
-    @teams_manager.find_team_name(team_number)
+    find_team_name(@game_teams_season.most_tackles(season_id))
   end
 
   def fewest_tackles(season_id)
-    team_number = @game_teams_manager.fewest_tackles(season_id)
-    @teams_manager.find_team_name(team_number)
+    find_team_name(@game_teams_season.fewest_tackles(season_id))
   end
 
   #Team Statistics
-
   def team_info(team_id)
     @teams_manager.team_info(team_id)
   end
@@ -126,7 +126,7 @@ class StatTracker
   end
 
   def average_win_percentage(team_id)
-    @game_teams_manager.get_average_win_percentage(team_id)
+    @game_teams_manager.get_average_win_pct(team_id)
   end
 
   def most_goals_scored(team_id)
@@ -150,15 +150,11 @@ class StatTracker
     @games_manager.find_season_id(game_id)
   end
 
+  def list_of_season_game_ids(season_id)
+    @games_manager.list_of_season_game_ids(season_id)
+  end
+
   def find_team_name(team_number)
     @teams_manager.find_team_name(team_number)
-  end
-
-  def average_number_of_goals_scored_by_team(team_id)
-    @game_teams_manager.average_number_of_goals_scored_by_team(team_id)
-  end
-
-  def average_number_of_goals_scored_by_team_by_type(team_id, home_away)
-    @game_teams_manager.average_number_of_goals_scored_by_team_by_type(team_id, home_away)
   end
 end

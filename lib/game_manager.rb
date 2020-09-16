@@ -39,15 +39,15 @@ class GamesManager
   def percentage_visitor_wins
     visitor_games_won = @games.count do |game|
       game.home_goals < game.away_goals
-    end
-    (visitor_games_won.to_f / @games.count).round(2)
+    end.to_f
+    average_with_count(visitor_games_won, @games,2)
   end
 
   def percentage_ties
     ties = @games.count do |game|
       game.home_goals == game.away_goals
-    end
-    (ties.to_f / @games.count).round(2)
+    end.to_f
+    average_with_count(ties, @games,2)
   end
 
   def list_of_seasons
@@ -69,11 +69,11 @@ class GamesManager
   def total_goals
     @games.sum do |game|
       game.total_score
-    end
+    end.to_f
   end
 
   def average_goals_per_game
-    (total_goals.to_f / @games.count).round(2)
+    average_with_count(total_goals, @games, 2)
   end
 
   def total_goals_by_season(season)
@@ -87,7 +87,8 @@ class GamesManager
   end
 
   def average_goals_by_season_data(season)
-    (total_goals_by_season(season) / count_games_by_season[season].to_f).round(2)
+    goals = total_goals_by_season(season)
+    average(goals, count_games_by_season[season].to_f, 2)
   end
 
   def average_goals_by_season
@@ -96,6 +97,15 @@ class GamesManager
       average_goals_by_season[season] = average_goals_by_season_data(season)
     end
     average_goals_by_season
+  end
+
+  def list_of_season_game_ids(season_id)
+    game_list = @games.select do |game|
+      game.season == season_id
+    end
+    game_list.map do |game|
+      game.game_id
+    end
   end
 
   def find_season_id(game_id)
