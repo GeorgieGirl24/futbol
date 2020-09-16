@@ -1,8 +1,5 @@
-require "./test/test_helper"
-require './lib/stat_tracker'
-require './lib/game_teams_manager'
+require './test/test_helper'
 require './lib/game_team'
-require 'pry';
 require 'mocha/minitest'
 
 class GameTeamTest < Minitest::Test
@@ -24,24 +21,12 @@ class GameTeamTest < Minitest::Test
             'giveaways'               => '17',
             'takeaways'               => '7'
             }
-    game_path = './data/dummy_game.csv'
-    team_path = './data/dummy_teams.csv'
-    game_teams_path = './data/dummy_game_teams.csv'
-    locations = {
-      games: game_path,
-      teams: team_path,
-      game_teams: game_teams_path
-    }
-    stat_tracker = StatTracker.from_csv(locations)
-    manager = GameTeamsManager.new(game_teams_path, stat_tracker)
+    manager = mock('game_manager')
     @game_team = GameTeam.new(data, manager)
   end
 
-  def test_it_exists
-    assert_instance_of GameTeam, @game_team
+  def test_it_has_attributes
+    assert_equal '3', @game_team.team_id
+    assert_equal 'LOSS', @game_team.result
   end
-
-  # def test_it_can_find_season_id
-  #   assert_equal '20122013', @game_team.season_id
-  # end
 end

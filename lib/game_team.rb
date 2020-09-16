@@ -13,8 +13,7 @@ class GameTeam
               :power_goals,
               :face_off,
               :giveaways,
-              :takeaways,
-              :manager
+              :takeaways
 
   def initialize(data, manager)
     @game_id = data["game_id"]
@@ -32,12 +31,5 @@ class GameTeam
     @face_off = data["faceOffWinPercentage"]
     @giveaways = data["giveaways"]
     @takeaways = data["takeaways"]
-    @manager = manager
-    # @season_id = find_season_id(@game_id)
   end
-
-  # def find_season_id(game_id)
-  #   @manager.find_season_id(game_id)
-  # end
-
 end
