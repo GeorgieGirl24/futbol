@@ -31,6 +31,12 @@ class GameTeamsSeasonTest < Minitest::Test
     refute_equal 4, @game_team_season.list_teams_in_season(season_id).count
   end
 
+  def test_it_can_list_coaches_in_season
+    season_id = '20122013'
+    expected = ["John Tortorella", "Claude Julien", "Dan Bylsma"]
+    assert_equal expected, @game_team_season.list_coaches_in_season(season_id)
+  end
+
   def test_it_can_list_game_teams_season_team
     season_id = '20122013'
     team_id = '6'
@@ -38,23 +44,10 @@ class GameTeamsSeasonTest < Minitest::Test
     refute_equal 10, @game_team_season.list_game_teams_season_team(season_id, team_id).count
   end
 
-  def test_it_can_list_coaches_in_season
-    season_id = '20122013'
-    expected = ["John Tortorella", "Claude Julien", "Dan Bylsma"]
-    assert_equal expected, @game_team_season.list_coaches_in_season(season_id)
-  end
-
   def test_it_can_list_game_teams_for_coach
     season_id = '20122013'
     head_coach = 'Claude Julien'
     assert_equal 7, @game_team_season.game_teams_for_coach(season_id, head_coach).count
-  end
-
-  def test_games_for_coach
-    season_id = '20152016'
-    head_coach = 'Mike Sullivan'
-    assert_equal 1, @game_team_season.games_for_coach(season_id, head_coach)
-    refute_equal 2, @game_team_season.games_for_coach(season_id, head_coach)
   end
 
   def test_wins_for_coach
@@ -81,6 +74,18 @@ class GameTeamsSeasonTest < Minitest::Test
     assert_equal 179, @game_team_season.tackles_by_team(season_id, team_num)
   end
 
+  def test_avg_wins_pct_for_coach
+    season_id = '20122013'
+    head_coach = 'John Tortorella'
+    assert_equal 0.0, @game_team_season.avg_wins_pct_for_coach(season_id, head_coach)
+  end
+
+  def avg_ratio_goals_shots
+    season_id = '20122013'
+    team_id = '3'
+    assert_equal 0.0, @game_team_season.avg_ratio_goals_shots(season_id, team_id)
+  end
+
   def test_coaches_hash_w_avg_win_percentage
     season_id = '20152016'
     expected = {'Mike Sullivan' => 1.0, 'Alain Vigneault' => 0.0}
@@ -100,9 +105,9 @@ class GameTeamsSeasonTest < Minitest::Test
   def test_teams_hash_w_tackles
     season_id = '20122013'
     expected = {
-                  '3' => 179,
-                  '6' => 212,
-                  '5' => 71
+      '3' => 179,
+      '6' => 212,
+      '5' => 71
     }
     assert_equal expected, @game_team_season.teams_hash_w_tackles(season_id)
   end
@@ -110,6 +115,13 @@ class GameTeamsSeasonTest < Minitest::Test
   def test_it_can_find_winningest_coach
     season_id = '20152016'
     assert_equal 'Mike Sullivan', @game_team_season.winningest_coach(season_id)
+  end
+
+  def test_games_for_coach
+    season_id = '20152016'
+    head_coach = 'Mike Sullivan'
+    assert_equal 1, @game_team_season.games_for_coach(season_id, head_coach)
+    refute_equal 2, @game_team_season.games_for_coach(season_id, head_coach)
   end
 
   def test_it_can_find_worst_coach
