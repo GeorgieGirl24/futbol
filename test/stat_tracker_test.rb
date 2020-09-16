@@ -68,11 +68,6 @@ class StatTrackerTest < Minitest::Test
     assert_equal 3, @stat_tracker.count_of_teams
   end
 
-  def test_it_can_find_a_name
-    team_number = '5'
-    assert_equal 'Sporting Kansas City', @stat_tracker.find_team_name(team_number)
-  end
-
   def test_find_best_offense
     assert_equal 'FC Dallas', @stat_tracker.best_offense
   end
@@ -95,11 +90,6 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_can_lowest_scoring_home
     assert_equal 'Sporting Kansas City', @stat_tracker.lowest_scoring_home_team
-  end
-
-  def test_it_can_find_season_id
-    game_id = '2012030221'
-    assert_equal '20122013', @stat_tracker.find_season_id(game_id)
   end
 
   def test_it_can_find_winningest_coach
@@ -179,7 +169,19 @@ class StatTrackerTest < Minitest::Test
     assert_equal 'Houston Dynamo', @stat_tracker.rival(team_id)
   end
 
-  def test_it_can_return_list_of_season_game_ids
+  def test_it_can_find_season_id
+    game_id = '2012030221'
+    assert_equal '20122013', @stat_tracker.find_season_id(game_id)
+  end
 
+  def test_it_can_return_list_of_season_game_ids
+    season_id = '20122013'
+    expected = ["2012030221", "2012030222", "2012030223", "2012030224", "2012030225", "2012030311", "2012030312"]
+    assert_equal expected, @stat_tracker.list_of_season_game_ids(season_id)
+  end
+
+  def test_it_can_find_a_name
+    team_number = '5'
+    assert_equal 'Sporting Kansas City', @stat_tracker.find_team_name(team_number)
   end
 end
