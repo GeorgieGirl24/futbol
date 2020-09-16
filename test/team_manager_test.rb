@@ -21,6 +21,12 @@ class TeamManagerTest < Minitest::Test
     assert_equal 'Houston Dynamo', @team_manager.find_team_name(team_number)
   end
 
+  def test_finding_a_team
+    team_id = '5'
+    assert_equal 'Sporting Kansas City', @team_manager.find_a_team(team_id).team_name
+    assert_equal 'SKC', @team_manager.find_a_team(team_id).abbreviation
+  end
+
   def test_it_can_get_team_info
     team_id = '5'
     expected = {

@@ -24,14 +24,19 @@ class TeamsManager
     end.team_name
   end
 
+  def find_a_team(team_id)
+    @teams.find do |team|
+      team.team_id == team_id
+    end
+  end
+
   def team_info(team_id)
-    team = @teams.find { |team| team.team_id == team_id }
-    team_info = {
-      'team_id' => team.team_id,
-      'franchise_id' => team.franchise_id,
-      'team_name' => team.team_name,
-      'abbreviation' => team.abbreviation,
-      'link' => team.link
+    {
+      'team_id' => find_a_team(team_id).team_id,
+      'franchise_id' => find_a_team(team_id).franchise_id,
+      'team_name' => find_a_team(team_id).team_name,
+      'abbreviation' => find_a_team(team_id).abbreviation,
+      'link' => find_a_team(team_id).link
     }
   end
 end
