@@ -1,12 +1,11 @@
-require 'minitest/autorun'
-require 'minitest/pride'
+require "./test/test_helper"
 require './lib/stat_tracker'
 require './lib/game_teams_manager'
 require './lib/game_team'
 require 'pry';
 require 'mocha/minitest'
 
-class TeamTest < Minitest::Test
+class GameTeamTest < Minitest::Test
   def setup
     data = {
             'game_id'                 => '2012030221',
