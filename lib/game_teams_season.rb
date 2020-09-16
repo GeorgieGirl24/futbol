@@ -66,8 +66,6 @@ class GameTeamsSeason < GameTeamsManager
   end
 
   def avg_ratio_goals_shots(season_id, team_id)
-    # goals =
-    # shots =
     average(goals_by_team(season_id, team_id), shots_by_team(season_id, team_id))
   end
 

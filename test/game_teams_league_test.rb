@@ -25,15 +25,18 @@ class GameTeamsLeagueTest < Minitest::Test
   end
 
   def test_it_can_return_teams_list
-
+    assert_equal ['3', '6', '5'], @game_teams_league.teams_list
+    refute_equal ['5', '3', '6'], @game_teams_league.teams_list
   end
 
-  def test_it_can_return_total_goals
-
+  def test_return_total_goals_by_team
+    assert_equal 20.0, @game_teams_league.total_goals('6')
+    refute_equal 2.0, @game_teams_league.total_goals('6')
   end
 
   def test_average_number_of_goals_scored_by_team
     assert_equal 1.5, @game_teams_league.average_number_of_goals_scored_by_team('3')
+    refute_equal 2.3, @game_teams_league.average_number_of_goals_scored_by_team('3')
   end
 
   def test_return_total_goals_by_type
@@ -46,12 +49,18 @@ class GameTeamsLeagueTest < Minitest::Test
     assert_equal 1.3333, @game_teams_league.avg_goals_team_type('3', 'home')
   end
 
-  def test_it_can_return_all_goal_all_teams_hash
-
+  def test_avg_goals_all_teams_hash
+    expected = {'3'=>1.5, '6'=>2.86, '5'=>1.33}
+    assert_equal expected, @game_teams_league.avg_goals_all_teams_hash
   end
 
-  def test_it_can_return_avg_goals_team_type_hash
-
+  def test_avg_goals_team_type_hash
+    home_away = 'away'
+    expected = { '3' => 1.6667, '6' => 2.75, '5' =>3.0 }
+    assert_equal expected, @game_teams_league.avg_goals_team_type_hash(home_away)
+    home_away = 'home'
+    expected_1 = { '3' =>1.3333, '6' => 3.0, '5' => 0.5}
+    assert_equal expected_1, @game_teams_league.avg_goals_team_type_hash(home_away)
   end
 
   def test_find_best_offense
