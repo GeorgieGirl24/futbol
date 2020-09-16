@@ -42,7 +42,20 @@ class GameTeamsManager
 
   def selected_season_game_teams(season_id)
     @game_teams.select do |game_team|
-      game_team.season_id == season_id
+      find_season_id(game_team.game_id) == season_id
+    end
+  end
+
+  def list_seasons_played_by_team(team_id)
+    games_played(team_id).group_by do |game_team|
+      find_season_id(game_team.game_id)
+    end
+  end
+
+  def games_played_by_team_by_season(season, team_id)
+    games_played(team_id).select do |game_team|
+      find_season_id(game_team.game_id) == season
+      # game_team.season_id == season
     end
   end
 
@@ -92,16 +105,9 @@ class GameTeamsManager
     tackles_by_team
   end
 
-  def games_played_by_team_by_season(season, team_id)
-    games_played(team_id).select do |game_team|
-      game_team.season_id == season
-    end
-  end
-
   def season_win_pct_hash(team_id)
     season_hash = {}
-    games_played(team_id).each do |game_team|
-      season = game_team.season_id
+    list_seasons_played_by_team(team_id).each do |season, game_team|
       season_hash[season] ||= []
       season_hash[season] = average_with_count(total_wins_team(season, team_id), games_played_by_team_by_season(season, team_id))
     end
