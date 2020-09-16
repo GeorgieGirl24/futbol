@@ -10,9 +10,4 @@ class GameTeamsHelperTest < Minitest::Test
     manager.stubs(:class).returns(GameTeamsManager)
     @game_team_helper = GameTeamsHelper.new(manager)
   end
-
-  def test_return_total_goals_by_team
-    @game_team_helper.stubs(:goals).returns([20])
-    assert_equal 20.0, @game_team_helper.total_goals('6')
-  end
 end
