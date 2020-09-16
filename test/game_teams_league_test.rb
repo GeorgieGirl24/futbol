@@ -45,10 +45,14 @@ class GameTeamsLeagueTest < Minitest::Test
     assert_equal 4, @game_teams_league.total_goals_by_type('3', 'home')
   end
 
-
   def test_average_number_of_goals_scored_by_team_by_type
     assert_equal 1.6667, @game_teams_league.avg_goals_team_type('3', 'away')
     assert_equal 1.3333, @game_teams_league.avg_goals_team_type('3', 'home')
+  end
+
+  def test_avg_goals_all_teams_hash
+    expected = {"3"=>1.5, "6"=>2.86, "5"=>1.33}
+    assert_equal expected, @game_teams_league.avg_goals_all_teams_hash
   end
 
   def test_it_can_return_all_goal_all_teams_hash
