@@ -1,9 +1,9 @@
-require "./test/test_helper"
+require './test/test_helper'
 require './lib/stat_tracker'
 require './lib/game_manager'
 require './lib/game_teams_manager'
 require './lib/team_manager'
-require 'pry';
+
 
 class StatTrackerTest < Minitest::Test
   def setup
