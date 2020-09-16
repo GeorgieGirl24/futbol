@@ -50,6 +50,13 @@ class GameTeamsSeasonTest < Minitest::Test
     assert_equal 7, @game_team_season.game_teams_for_coach(season_id, head_coach).count
   end
 
+  def test_games_for_coach
+    season_id = '20152016'
+    head_coach = 'Mike Sullivan'
+    assert_equal 1, @game_team_season.games_for_coach(season_id, head_coach)
+    refute_equal 2, @game_team_season.games_for_coach(season_id, head_coach)
+  end
+
   def test_wins_for_coach
     season_id = '20122013'
     head_coach = 'Claude Julien'

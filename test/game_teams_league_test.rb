@@ -29,8 +29,9 @@ class GameTeamsLeagueTest < Minitest::Test
 
   end
 
-  def test_it_can_return_total_goals
-
+  def test_return_total_goals_by_team
+    assert_equal 20, @game_teams_manager.total_goals('6')
+    refute_equal 2, @game_teams_manager.total_goals('6')
   end
 
   def test_average_number_of_goals_scored_by_team
