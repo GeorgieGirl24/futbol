@@ -5,7 +5,6 @@
   * [Learning Goals](#learning-goals)
   * [Contributors](#contributors)
   * [Technologies](#technologies)
-  * [Setup](#setup)
   * [Design](#design)
   * [Images](#images)
 
@@ -30,11 +29,9 @@
   * Cydnee Owens
   * George Soderholm
 
-## Setup
-
 ## Technologies
 
-- Ruby 
+- Ruby
 
 ## Design
 The following design structure is based on a school analogy and is also visually represented in the image below, FB Image 1. In this analogy, StatTracker represents the school's principal, the Managers represent the school's teachers, the Children Managers represent the teacher's assistants and the Classes represents the teacher's students. Additionally, each teacher has access to the tutor, who represents a Module.  
