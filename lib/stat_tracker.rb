@@ -59,27 +59,27 @@ class StatTracker
   end
 
   def best_offense
-    @teams_manager.best_offense
+    find_team_name(@game_teams_manager.best_offense)
   end
 
   def worst_offense
-    @teams_manager.worst_offense
+    find_team_name(@game_teams_manager.worst_offense)
   end
 
   def highest_scoring_visitor
-    @teams_manager.highest_scoring_visitor
+    find_team_name(@game_teams_manager.highest_scoring_visitor)
   end
 
   def lowest_scoring_visitor
-    @teams_manager.lowest_scoring_visitor
+    find_team_name(@game_teams_manager.lowest_scoring_visitor)
   end
 
   def highest_scoring_home_team
-    @teams_manager.highest_scoring_home
+    find_team_name(@game_teams_manager.highest_scoring_home)
   end
 
   def lowest_scoring_home_team
-    @teams_manager.lowest_scoring_home
+    find_team_name(@game_teams_manager.lowest_scoring_home)
   end
 
   # Season Statistics
@@ -92,27 +92,22 @@ class StatTracker
   end
 
   def most_accurate_team(season_id)
-    team_number = @game_teams_manager.most_accurate_team(season_id)
-    @teams_manager.find_team_name(team_number)
+    find_team_name(@game_teams_manager.most_accurate_team(season_id))
   end
 
   def least_accurate_team(season_id)
-    team_number = @game_teams_manager.least_accurate_team(season_id)
-    @teams_manager.find_team_name(team_number)
+    find_team_name(@game_teams_manager.least_accurate_team(season_id))
   end
 
   def most_tackles(season_id)
-    team_number = @game_teams_manager.most_tackles(season_id)
-    @teams_manager.find_team_name(team_number)
+    find_team_name(@game_teams_manager.most_tackles(season_id))
   end
 
   def fewest_tackles(season_id)
-    team_number = @game_teams_manager.fewest_tackles(season_id)
-    @teams_manager.find_team_name(team_number)
+    find_team_name(@game_teams_manager.fewest_tackles(season_id))
   end
 
   #Team Statistics
-
   def team_info(team_id)
     @teams_manager.team_info(team_id)
   end
@@ -152,13 +147,5 @@ class StatTracker
 
   def find_team_name(team_number)
     @teams_manager.find_team_name(team_number)
-  end
-
-  def average_number_of_goals_scored_by_team(team_id)
-    @game_teams_manager.average_number_of_goals_scored_by_team(team_id)
-  end
-
-  def average_number_of_goals_scored_by_team_by_type(team_id, home_away)
-    @game_teams_manager.average_number_of_goals_scored_by_team_by_type(team_id, home_away)
   end
 end

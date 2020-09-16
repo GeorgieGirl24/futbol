@@ -142,11 +142,20 @@ class GameTeamsManager
     woohoo
   end
 
-  def average_goals_all_teams_hash
+  def avg_goals_all_teams_hash
     hash = {}
     teams_list.each do |team_id|
       hash[team_id] ||= 0
       hash[team_id] = average_number_of_goals_scored_by_team(team_id)
+    end
+    hash
+  end
+
+  def avg_goals_team_type_hash(home_away)
+    hash = {}
+    teams_list.each do |team_id|
+      hash[team_id] ||= 0
+      hash[team_id] = avg_goals_team_type(team_id, home_away)
     end
     hash
   end
@@ -162,15 +171,13 @@ class GameTeamsManager
     average_with_count(total_goals(team_id), games_played(team_id), 2)
   end
 
-
-
   def total_goals_by_type(team_id, home_away)
     games_played_by_type(team_id, home_away).sum do |game|
       game.goals
     end.to_f
   end
 
-  def average_number_of_goals_scored_by_team_by_type(team_id, home_away)
+  def avg_goals_team_type(team_id, home_away)
     average_with_count(total_goals_by_type(team_id, home_away), games_played_by_type(team_id, home_away), 2)
   end
 
@@ -284,26 +291,18 @@ class GameTeamsManager
   end
 
   def highest_scoring_visitor
-    @teams.max_by do |team|
-      team.avg_goals_visitor
-    end.team_name
+    avg_goals_team_type_hash('away').max_by{ |team_id, avg_goals| avg_goals }.to_a[0]
   end
 
   def lowest_scoring_visitor
-    @teams.min_by do |team|
-      team.avg_goals_visitor
-    end.team_name
+    avg_goals_team_type_hash('away').min_by{ |team_id, avg_goals| avg_goals }.to_a[0]
   end
 
   def highest_scoring_home
-    @teams.max_by do |team|
-      team.avg_goals_home
-    end.team_name
+    avg_goals_team_type_hash('home').max_by{ |team_id, avg_goals| avg_goals }.to_a[0]
   end
 
   def lowest_scoring_home
-    @teams.min_by do |team|
-      team.avg_goals_home
-    end.team_name
+    avg_goals_team_type_hash('away').min_by{ |team_id, avg_goals| avg_goals }.to_a[0]
   end
 end
