@@ -37,8 +37,8 @@ class GameTeamTest < Minitest::Test
     assert_equal '8', @game_team.pim
     assert_equal '3', @game_team.power_opps
     assert_equal '0', @game_team.power_goals
-    assert_equal '44.8', @game_team.face_off
     assert_equal '17', @game_team.giveaways
+    assert_equal '44.8', @game_team.face_off
     assert_equal '7', @game_team.takeaways
   end
 end

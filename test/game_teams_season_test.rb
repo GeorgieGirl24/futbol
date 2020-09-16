@@ -117,13 +117,6 @@ class GameTeamsSeasonTest < Minitest::Test
     assert_equal 'Mike Sullivan', @game_team_season.winningest_coach(season_id)
   end
 
-  def test_games_for_coach
-    season_id = '20152016'
-    head_coach = 'Mike Sullivan'
-    assert_equal 1, @game_team_season.games_for_coach(season_id, head_coach)
-    refute_equal 2, @game_team_season.games_for_coach(season_id, head_coach)
-  end
-
   def test_it_can_find_worst_coach
     season_id = '20122013'
     assert_equal 'John Tortorella', @game_team_season.worst_coach(season_id)
