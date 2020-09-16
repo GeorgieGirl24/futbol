@@ -57,30 +57,30 @@ class GameTeamsLeague < GameTeamsManager
   end
 
   def best_offense
-    avg_goals_all_teams_hash.max_by { |team_id, avg_goals| avg_goals }.to_a[0]
+    avg_goals_all_teams_hash.max_by { |_team_id, avg_goals| avg_goals }.to_a[0]
   end
 
   def worst_offense
-    avg_goals_all_teams_hash.min_by { |team_id, avg_goals| avg_goals }.to_a[0]
+    avg_goals_all_teams_hash.min_by { |_team_id, avg_goals| avg_goals }.to_a[0]
   end
 
   def highest_scoring_visitor
     hash = avg_goals_team_type_hash('away')
-    hash.max_by { |team_id, avg_goals| avg_goals }.to_a[0]
+    hash.max_by { |_team_id, avg_goals| avg_goals }.to_a[0]
   end
 
   def lowest_scoring_visitor
     hash = avg_goals_team_type_hash('away')
-    hash.min_by { |team_id, avg_goals| avg_goals }.to_a[0]
+    hash.min_by { |_team_id, avg_goals| avg_goals }.to_a[0]
   end
 
   def highest_scoring_home
     hash = avg_goals_team_type_hash('home')
-    hash.max_by { |team_id, avg_goals| avg_goals }.to_a[0]
+    hash.max_by { |_team_id, avg_goals| avg_goals }.to_a[0]
   end
 
   def lowest_scoring_home
     hash = avg_goals_team_type_hash('home')
-    hash.min_by { |team_id, avg_goals| avg_goals }.to_a[0]
+    hash.min_by { |_team_id, avg_goals| avg_goals }.to_a[0]
   end
 end

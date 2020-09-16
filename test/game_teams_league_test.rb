@@ -2,7 +2,6 @@ require './test/test_helper'
 require './lib/game_teams_league'
 require './lib/game_teams_manager'
 require './lib/stat_tracker'
-require 'pry';
 require 'mocha/minitest'
 
 class GameTeamsLeagueTest < Minitest::Test

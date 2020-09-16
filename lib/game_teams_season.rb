@@ -99,26 +99,38 @@ class GameTeamsSeason < GameTeamsManager
   end
 
   def winningest_coach(season_id)
-    coaches_hash_avg_win_pct(season_id).max_by { |coach, avg_win| avg_win }.to_a[0]
+    coaches_hash_avg_win_pct(season_id).max_by do |_coach, avg_win|
+      avg_win
+    end.to_a[0]
   end
 
   def worst_coach(season_id)
-    coaches_hash_avg_win_pct(season_id).min_by { |coach, avg_win| avg_win }.to_a[0]
+    coaches_hash_avg_win_pct(season_id).min_by do |_coach, avg_win|
+      avg_win
+    end.to_a[0]
   end
 
   def most_accurate_team(season_id)
-    teams_hash_shots_goals(season_id).max_by { |team, goals_ratio| goals_ratio }.to_a[0]
+    teams_hash_shots_goals(season_id).max_by do |_team, goals_ratio|
+      goals_ratio
+    end.to_a[0]
   end
 
   def least_accurate_team(season_id)
-    teams_hash_shots_goals(season_id).min_by { |team, goals_ratio| goals_ratio }.to_a[0]
+    teams_hash_shots_goals(season_id).min_by do |_team, goals_ratio|
+      goals_ratio
+    end.to_a[0]
   end
 
   def most_tackles(season_id)
-    teams_hash_w_tackles(season_id).max_by { |team, tackles| tackles }.to_a[0]
+    teams_hash_w_tackles(season_id).max_by do |_team, tackles|
+      tackles
+    end.to_a[0]
   end
 
   def fewest_tackles(season_id)
-    teams_hash_w_tackles(season_id).min_by { |team, tackles| tackles }.to_a[0]
+    teams_hash_w_tackles(season_id).min_by do |_team, tackles|
+      tackles
+    end.to_a[0]
   end
 end

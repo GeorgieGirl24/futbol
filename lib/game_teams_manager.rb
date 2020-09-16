@@ -88,7 +88,7 @@ class GameTeamsManager
 
   def season_win_pct_hash(team_id)
     season_hash = {}
-    list_seasons_played_by_team(team_id).each do |season, game_team|
+    list_seasons_played_by_team(team_id).each do |season, _game_team|
       season_hash[season] ||= 0
       season_hash[season] = avg_win_pct_per_season(season, team_id)
     end
@@ -107,11 +107,11 @@ class GameTeamsManager
   end
 
   def get_best_season(team_id)
-    season_win_pct_hash(team_id).max_by { |season, win_pct| win_pct }.to_a[0]
+    season_win_pct_hash(team_id).max_by { |_season, win_pct| win_pct }.to_a[0]
   end
 
   def get_worst_season(team_id)
-    season_win_pct_hash(team_id).min_by { |season, win_pct| win_pct }.to_a[0]
+    season_win_pct_hash(team_id).min_by { |_season, win_pct| win_pct }.to_a[0]
   end
 
   def get_most_goals_scored_for_team(team_id)
@@ -123,11 +123,11 @@ class GameTeamsManager
   end
 
   def get_favorite_opponent(team_id)
-    opponent_hash(team_id).max_by { |opp_team_id, tie_loss| tie_loss }.to_a[0]
+    opponent_hash(team_id).max_by { |_opp_team_id, tie_loss| tie_loss }.to_a[0]
   end
 
   def get_rival(team_id)
-    opponent_hash(team_id).min_by { |opp_team_id, tie_loss| tie_loss }.to_a[0]
+    opponent_hash(team_id).min_by { |_opp_team_id, tie_loss| tie_loss }.to_a[0]
   end
 
   def get_average_win_pct(team_id)
