@@ -98,8 +98,8 @@ class GameTeamsManagerTest < Minitest::Test
 
   def test_it_can_make_season_win_percentage_hash
     team_id = '6'
-    expected = {'20122013' => 0.8571}
-    unexpected = {'20152016' => 0.8581}
+    expected = { '20122013' => 0.8571 }
+    unexpected = { '20152016' => 0.8581 }
     assert_equal expected, @game_teams_manager.season_win_pct_hash(team_id)
     refute_equal unexpected, @game_teams_manager.season_win_pct_hash(team_id)
   end
