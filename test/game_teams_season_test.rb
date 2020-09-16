@@ -33,7 +33,7 @@ class GameTeamsSeasonTest < Minitest::Test
 
   def test_it_can_list_coaches_in_season
     season_id = '20122013'
-    expected = ["John Tortorella", "Claude Julien", "Dan Bylsma"]
+    expected = ['John Tortorella', 'Claude Julien', 'Dan Bylsma']
     assert_equal expected, @game_team_season.list_coaches_in_season(season_id)
   end
 

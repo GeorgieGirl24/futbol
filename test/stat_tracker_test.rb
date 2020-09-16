@@ -176,7 +176,7 @@ class StatTrackerTest < Minitest::Test
 
   def test_it_can_return_list_of_season_game_ids
     season_id = '20122013'
-    expected = ["2012030221", "2012030222", "2012030223", "2012030224", "2012030225", "2012030311", "2012030312"]
+    expected = ['2012030221', '2012030222', '2012030223', '2012030224', '2012030225', '2012030311', '2012030312']
     assert_equal expected, @stat_tracker.list_of_season_game_ids(season_id)
   end
 

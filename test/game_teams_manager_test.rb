@@ -147,19 +147,4 @@ class GameTeamsManagerTest < Minitest::Test
     team_id = '6'
     assert_equal 0.86, @game_teams_manager.get_average_win_pct(team_id)
   end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 end
