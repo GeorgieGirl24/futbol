@@ -1,9 +1,9 @@
-require "./test/test_helper"
+require './test/test_helper'
 require './lib/game_manager'
 require 'mocha/minitest'
 require './lib/stat_tracker'
 require './lib/game'
-require "pry";
+
 
 class GamesManagerTest < Minitest::Test
   def setup
