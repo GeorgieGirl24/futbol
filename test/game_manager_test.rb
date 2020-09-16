@@ -36,6 +36,11 @@ class GamesManagerTest < Minitest::Test
     assert_equal 0.13, @games_manager.percentage_ties
   end
 
+  def test_it_can_populate_a_list_of_seasons
+    expected = ["20122013","20152016"]
+    assert_equal expected, @games_manager.list_of_seasons
+  end
+
   def test_it_can_count_games_by_season
     expected = {
       "20122013" => 7,
@@ -44,25 +49,12 @@ class GamesManagerTest < Minitest::Test
     assert_equal expected, @games_manager.count_games_by_season
   end
 
-  def test_it_can_populate_a_list_of_seasons
-    expected = ["20122013","20152016"]
-    assert_equal expected, @games_manager.list_of_seasons
-  end
-
   def test_it_can_find_total_goals
     assert_equal 38, @games_manager.total_goals
   end
 
   def test_it_find_average_goals_per_game
     assert_equal 4.75, @games_manager.average_goals_per_game
-  end
-
-  def test_it_can_find_average_goals_by_season
-    expected = {
-      "20122013" => 4.86,
-      "20152016" => 4.0
-    }
-    assert_equal expected, @games_manager.average_goals_by_season
   end
 
   def test_it_can_find_total_goals_by_season
@@ -75,8 +67,18 @@ class GamesManagerTest < Minitest::Test
     assert_equal 4.86, @games_manager.average_goals_by_season_data(season)
   end
 
-  def test_it_can_return_list_of_season_game_ids
+  def test_it_can_find_average_goals_by_season
+    expected = {
+      "20122013" => 4.86,
+      "20152016" => 4.0
+    }
+    assert_equal expected, @games_manager.average_goals_by_season
+  end
 
+  def test_it_can_return_list_of_season_game_ids
+    season_id = "20122013"
+    expected = ["2012030221", "2012030222", "2012030223", "2012030224", "2012030225", "2012030311", "2012030312"]
+    assert_equal expected, @games_manager.list_of_season_game_ids(season_id)
   end
 
   def test_it_can_find_season_id
