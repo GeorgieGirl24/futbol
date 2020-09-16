@@ -1,5 +1,6 @@
+require 'csv'
 require_relative './game_team'
-require_relative './game_teams_helper'
+require_relative './game_teams_season'
 require_relative './averageable'
 
 class GameTeamsManager
@@ -20,30 +21,7 @@ class GameTeamsManager
   end
 
   def create_helper
-    @helper = GameTeamsHelper.new(self)
-  end
-
-  def find_season_id(game_id)
-    @tracker.find_season_id(game_id)
-  end
-
-  # Datasets
-  def games_played(team_id)
-    @game_teams.select do |game_team|
-      game_team.team_id == team_id
-    end
-  end
-
-  def teams_list
-    @game_teams.map do |game_team|
-      game_team.team_id
-    end.uniq
-  end
-
-  def games_played_by_type(team_id, home_away)
-    @game_teams.select do |game_team|
-      game_team.team_id == team_id && game_team.home_away == home_away
-    end
+    GameTeamsSeason.new(self)
   end
 
   def selected_season_game_teams(season_id)
@@ -52,15 +30,16 @@ class GameTeamsManager
     end
   end
 
-  def list_seasons_played_by_team(team_id)
-    games_played(team_id).group_by do |game_team|
-      find_season_id(game_team.game_id)
-    end
+  #Team
+
+  def find_season_id(game_id)
+    @tracker.find_season_id(game_id)
   end
 
-  def games_played_by_team_by_season(season, team_id)
-    games_played(team_id).select do |game_team|
-      find_season_id(game_team.game_id) == season
+  # Copy 2 of games_played
+  def games_played(team_id)
+    @game_teams.select do |game_team|
+      game_team.team_id == team_id
     end
   end
 
@@ -70,53 +49,16 @@ class GameTeamsManager
     end
   end
 
-  def coaches_hash_avg_win_pct(season_id)
-    by_coach_wins = {}
-    selected_season_game_teams(season_id).each do |game_team|
-      head_coach = game_team.head_coach
-      by_coach_wins[head_coach] ||= []
-      by_coach_wins[head_coach] = average(wins_for_coach(season_id, head_coach), games_for_coach(season_id, head_coach), 2)
-    end
-    by_coach_wins
+  def total_wins_team_all_seasons(team_id)
+    @game_teams.count do |game_team|
+      game_team.result == 'WIN' if game_team.team_id == team_id
+    end.to_f
   end
 
-  def list_teams_in_season(season_id)
-    selected_season_game_teams(season_id).map do |game_team|
-      game_team.team_id
-    end.uniq
-  end
-
-  def list_game_teams_season_team(season_id, team_id)
-    selected_season_game_teams(season_id).select do |game_team|
-      game_team.team_id == team_id
+  def list_seasons_played_by_team(team_id)
+    games_played(team_id).group_by do |game_team|
+      find_season_id(game_team.game_id)
     end
-  end
-
-  def teams_hash_shots_goals(season_id)
-    by_team_goals_ratio = {}
-    list_teams_in_season(season_id).each do |team_id|
-      by_team_goals_ratio[team_id] ||= []
-      by_team_goals_ratio[team_id] = average(goals_by_team(season_id, team_id), shots_by_team(season_id, team_id))
-    end
-    by_team_goals_ratio
-  end
-
-  def teams_hash_w_tackles(season_id)
-    tackles_by_team = {}
-    list_teams_in_season(season_id).each do |team_id|
-      tackles_by_team[team_id] ||= []
-      tackles_by_team[team_id] = tackles_by_team(season_id, team_id)
-    end
-    tackles_by_team
-  end
-
-  def season_win_pct_hash(team_id)
-    season_hash = {}
-    list_seasons_played_by_team(team_id).each do |season, game_team|
-      season_hash[season] ||= []
-      season_hash[season] = average_with_count(total_wins_team(season, team_id), games_played_by_team_by_season(season, team_id))
-    end
-    season_hash
   end
 
   def game_ids_played_by_team(team_id)
@@ -131,83 +73,9 @@ class GameTeamsManager
     end
   end
 
-  def opponent_hash(team_id)
-    woohoo = {}
-    games_w_opponent_hash(team_id).map do |opp_team_id, game_team_obj|
-      tie_loss = game_team_obj.count do |game_team|
-        game_team.result == 'LOSS' || game_team.result == 'TIE'
-      end.to_f
-      woohoo[opp_team_id] = average_with_count(tie_loss, game_team_obj, 2)
-    end
-    woohoo
-  end
-
-  def avg_goals_all_teams_hash
-    hash = {}
-    teams_list.each do |team_id|
-      hash[team_id] ||= 0
-      hash[team_id] = average_number_of_goals_scored_by_team(team_id)
-    end
-    hash
-  end
-
-  def avg_goals_team_type_hash(home_away)
-    hash = {}
-    teams_list.each do |team_id|
-      hash[team_id] ||= 0
-      hash[team_id] = avg_goals_team_type(team_id, home_away)
-    end
-    hash
-  end
-
-  # Helpers
-  def total_goals(team_id)
-    games_played(team_id).sum do |game|
-      game.goals
-    end.to_f
-  end
-
-  def average_number_of_goals_scored_by_team(team_id)
-    average_with_count(total_goals(team_id), games_played(team_id), 2)
-  end
-
-  def total_goals_by_type(team_id, home_away)
-    games_played_by_type(team_id, home_away).sum do |game|
-      game.goals
-    end.to_f
-  end
-
-  def avg_goals_team_type(team_id, home_away)
-    average_with_count(total_goals_by_type(team_id, home_away), games_played_by_type(team_id, home_away), 2)
-  end
-
-  def wins_for_coach(season_id, head_coach)
-    selected_season_game_teams(season_id).count do |game_team|
-      game_team.result == 'WIN' if game_team.head_coach == head_coach
-    end.to_f
-  end
-
-  def games_for_coach(season_id, head_coach)
-    selected_season_game_teams(season_id).count do |game_team|
-      game_team.head_coach == head_coach
-    end
-  end
-
-  def shots_by_team(season_id, team_id)
-    list_game_teams_season_team(season_id, team_id).sum do |game_team|
-      game_team.shots
-    end
-  end
-
-  def goals_by_team(season_id, team_id)
-    list_game_teams_season_team(season_id, team_id).sum do |game_team|
-      game_team.goals
-    end.to_f
-  end
-
-  def tackles_by_team(season_id, team_id)
-    list_game_teams_season_team(season_id, team_id).sum do |game_team|
-      game_team.tackles
+  def games_played_by_team_by_season(season, team_id)
+    games_played(team_id).select do |game_team|
+      find_season_id(game_team.game_id) == season
     end
   end
 
@@ -217,45 +85,30 @@ class GameTeamsManager
     end.to_f
   end
 
-  def total_wins_team_all_seasons(team_id)
-    @game_teams.count do |game_team|
-      game_team.result == 'WIN' if game_team.team_id == team_id
-    end.to_f
-  end
-
-  def get_average_win_pct(team_id)
-    average_with_count(total_wins_team_all_seasons(team_id), games_played(team_id), 2)
-  end
-
   def games_w_opponent_hash(team_id)
     game_teams_played_by_opponent(team_id).group_by do |game_team|
       game_team.team_id
     end
   end
 
-  # Core Statistics
-  def winningest_coach(season_id)
-    coaches_hash_avg_win_pct(season_id).max_by { |coach, avg_win| avg_win }.to_a[0]
+  def season_win_pct_hash(team_id)
+    season_hash = {}
+    list_seasons_played_by_team(team_id).each do |season, game_team|
+      season_hash[season] ||= []
+      season_hash[season] = average_with_count(total_wins_team(season, team_id), games_played_by_team_by_season(season, team_id))
+    end
+    season_hash
   end
 
-  def worst_coach(season_id)
-    coaches_hash_avg_win_pct(season_id).min_by { |coach, avg_win| avg_win }.to_a[0]
-  end
-
-  def most_accurate_team(season_id)
-    teams_hash_shots_goals(season_id).max_by { |team, goals_ratio| goals_ratio }.to_a[0]
-  end
-
-  def least_accurate_team(season_id)
-    teams_hash_shots_goals(season_id).min_by { |team, goals_ratio| goals_ratio }.to_a[0]
-  end
-
-  def most_tackles(season_id)
-    teams_hash_w_tackles(season_id).max_by { |team, tackles| tackles }.to_a[0]
-  end
-
-  def fewest_tackles(season_id)
-    teams_hash_w_tackles(season_id).min_by { |team, tackles| tackles }.to_a[0]
+  def opponent_hash(team_id)
+    woohoo = {}
+    games_w_opponent_hash(team_id).map do |opp_team_id, game_team_obj|
+      tie_loss = game_team_obj.count do |game_team|
+        game_team.result == 'LOSS' || game_team.result == 'TIE'
+      end.to_f
+      woohoo[opp_team_id] = average_with_count(tie_loss, game_team_obj, 2)
+    end
+    woohoo
   end
 
   def get_best_season(team_id)
@@ -280,6 +133,67 @@ class GameTeamsManager
 
   def get_rival(team_id)
     opponent_hash(team_id).min_by { |opp_team_id, tie_loss| tie_loss }.to_a[0]
+  end
+
+  def get_average_win_pct(team_id)
+    average_with_count(total_wins_team_all_seasons(team_id), games_played(team_id), 2)
+  end
+
+# League
+  def games_played(team_id)
+    @game_teams.select do |game_team|
+      game_team.team_id == team_id
+    end
+  end
+
+  def games_played_by_type(team_id, home_away)
+    @game_teams.select do |game_team|
+      game_team.team_id == team_id && game_team.home_away == home_away
+    end
+  end
+
+  def teams_list
+    @game_teams.map do |game_team|
+      game_team.team_id
+    end.uniq
+  end
+
+  def total_goals(team_id)
+    games_played(team_id).sum do |game|
+      game.goals
+    end.to_f
+  end
+
+  def average_number_of_goals_scored_by_team(team_id)
+    average_with_count(total_goals(team_id), games_played(team_id), 2)
+  end
+
+  def total_goals_by_type(team_id, home_away)
+    games_played_by_type(team_id, home_away).sum do |game|
+      game.goals
+    end.to_f
+  end
+
+  def avg_goals_team_type(team_id, home_away)
+    average_with_count(total_goals_by_type(team_id, home_away), games_played_by_type(team_id, home_away), 2)
+  end
+
+  def avg_goals_all_teams_hash
+    hash = {}
+    teams_list.each do |team_id|
+      hash[team_id] ||= 0
+      hash[team_id] = average_number_of_goals_scored_by_team(team_id)
+    end
+    hash
+  end
+
+  def avg_goals_team_type_hash(home_away)
+    hash = {}
+    teams_list.each do |team_id|
+      hash[team_id] ||= 0
+      hash[team_id] = avg_goals_team_type(team_id, home_away)
+    end
+    hash
   end
 
   def best_offense
