@@ -24,49 +24,15 @@ class TeamsManager
     end.team_name
   end
 
-  def average_number_of_goals_scored_by_team(team_id)
-    @tracker.average_number_of_goals_scored_by_team(team_id)
-  end
+  # def average_number_of_goals_scored_by_team(team_id)
+  #   @tracker.average_number_of_goals_scored_by_team(team_id)
+  # end
 
-  def best_offense
-    @teams.max_by do |team|
-      team.average_goals
-    end.team_name
-  end
+  # def average_number_of_goals_scored_by_team_by_type(team_id, home_away)
+  #   @tracker.average_number_of_goals_scored_by_team_by_type(team_id, home_away)
+  # end
 
-  def worst_offense
-    @teams.min_by do |team|
-      team.average_goals
-    end.team_name
-  end
 
-  def average_number_of_goals_scored_by_team_by_type(team_id, home_away)
-    @tracker.average_number_of_goals_scored_by_team_by_type(team_id, home_away)
-  end
-
-  def highest_scoring_visitor
-    @teams.max_by do |team|
-      team.avg_goals_visitor
-    end.team_name
-  end
-
-  def lowest_scoring_visitor
-    @teams.min_by do |team|
-      team.avg_goals_visitor
-    end.team_name
-  end
-
-  def highest_scoring_home
-    @teams.max_by do |team|
-      team.avg_goals_home
-    end.team_name
-  end
-
-  def lowest_scoring_home
-    @teams.min_by do |team|
-      team.avg_goals_home
-    end.team_name
-  end
 
   def find_a_team(team_id)
     @teams.find do |team|

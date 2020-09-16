@@ -34,6 +34,12 @@ class GameTeamsManager
     end
   end
 
+  def teams_list
+    @game_teams.map do |game_team|
+      game_team.team_id
+    end.uniq
+  end
+
   def games_played_by_type(team_id, home_away)
     @game_teams.select do |game_team|
       game_team.team_id == team_id && game_team.home_away == home_away
@@ -55,7 +61,6 @@ class GameTeamsManager
   def games_played_by_team_by_season(season, team_id)
     games_played(team_id).select do |game_team|
       find_season_id(game_team.game_id) == season
-      # game_team.season_id == season
     end
   end
 
@@ -137,16 +142,27 @@ class GameTeamsManager
     woohoo
   end
 
+  def average_goals_all_teams_hash
+    hash = {}
+    teams_list.each do |team_id|
+      hash[team_id] ||= 0
+      hash[team_id] = average_number_of_goals_scored_by_team(team_id)
+    end
+    hash
+  end
+
   # Helpers
-  # def total_goals(team_id)
-  #   games_played(team_id).sum do |game|
-  #     game.goals
-  #   end.to_f
-  # end
+  def total_goals(team_id)
+    games_played(team_id).sum do |game|
+      game.goals
+    end.to_f
+  end
 
   def average_number_of_goals_scored_by_team(team_id)
-    average_with_count(@helper.total_goals(team_id), games_played(team_id), 2)
+    average_with_count(total_goals(team_id), games_played(team_id), 2)
   end
+
+
 
   def total_goals_by_type(team_id, home_away)
     games_played_by_type(team_id, home_away).sum do |game|
@@ -257,5 +273,37 @@ class GameTeamsManager
 
   def get_rival(team_id)
     opponent_hash(team_id).min_by { |opp_team_id, tie_loss| tie_loss }.to_a[0]
+  end
+
+  def best_offense
+    avg_goals_all_teams_hash.max_by { |team_id, avg_goals| avg_goals }.to_a[0]
+  end
+
+  def worst_offense
+    avg_goals_all_teams_hash.min_by { |team_id, avg_goals| avg_goals }.to_a[0]
+  end
+
+  def highest_scoring_visitor
+    @teams.max_by do |team|
+      team.avg_goals_visitor
+    end.team_name
+  end
+
+  def lowest_scoring_visitor
+    @teams.min_by do |team|
+      team.avg_goals_visitor
+    end.team_name
+  end
+
+  def highest_scoring_home
+    @teams.max_by do |team|
+      team.avg_goals_home
+    end.team_name
+  end
+
+  def lowest_scoring_home
+    @teams.min_by do |team|
+      team.avg_goals_home
+    end.team_name
   end
 end

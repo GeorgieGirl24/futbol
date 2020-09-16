@@ -29,38 +29,38 @@ class TeamManagerTest < Minitest::Test
     assert_equal 'Houston Dynamo', @team_manager.find_team_name(team_number)
   end
 
-  def test_average_number_of_goals_scored_by_team
-    assert_equal 1.5, @team_manager.average_number_of_goals_scored_by_team('3')
-  end
+  # def test_average_number_of_goals_scored_by_team
+  #   assert_equal 1.5, @team_manager.average_number_of_goals_scored_by_team('3')
+  # end
 
-  def test_find_best_offense
-    assert_equal 'FC Dallas', @team_manager.best_offense
-  end
+  # def test_find_best_offense
+  #   assert_equal 'FC Dallas', @team_manager.best_offense
+  # end
+  #
+  # def test_find_worst_offense
+  #   assert_equal 'Sporting Kansas City', @team_manager.worst_offense
+  # end
 
-  def test_find_worst_offense
-    assert_equal 'Sporting Kansas City', @team_manager.worst_offense
-  end
+  # def test_average_number_of_goals_scored_by_team_by_type
+  #   assert_equal 1.67, @team_manager.average_number_of_goals_scored_by_team_by_type('3', 'away')
+  #   assert_equal 1.33, @team_manager.average_number_of_goals_scored_by_team_by_type('3', 'home')
+  # end
 
-  def test_average_number_of_goals_scored_by_team_by_type
-    assert_equal 1.67, @team_manager.average_number_of_goals_scored_by_team_by_type('3', 'away')
-    assert_equal 1.33, @team_manager.average_number_of_goals_scored_by_team_by_type('3', 'home')
-  end
-
-  def test_it_can_find_highest_scoring_visitor
-    assert_equal 'Sporting Kansas City', @team_manager.highest_scoring_visitor
-  end
-
-  def test_it_can_find_lowest_scoring_visitor
-    assert_equal 'Houston Dynamo', @team_manager.lowest_scoring_visitor
-  end
-
-  def test_it_can_find_highest_scoring_home
-    assert_equal 'FC Dallas', @team_manager.highest_scoring_home
-  end
-
-  def test_it_can_lowest_scoring_home
-    assert_equal 'Sporting Kansas City', @team_manager.lowest_scoring_home
-  end
+  # def test_it_can_find_highest_scoring_visitor
+  #   assert_equal 'Sporting Kansas City', @team_manager.highest_scoring_visitor
+  # end
+  #
+  # def test_it_can_find_lowest_scoring_visitor
+  #   assert_equal 'Houston Dynamo', @team_manager.lowest_scoring_visitor
+  # end
+  #
+  # def test_it_can_find_highest_scoring_home
+  #   assert_equal 'FC Dallas', @team_manager.highest_scoring_home
+  # end
+  #
+  # def test_it_can_lowest_scoring_home
+  #   assert_equal 'Sporting Kansas City', @team_manager.lowest_scoring_home
+  # end
 
   def test_finding_a_team
     team_id = mock('5')
