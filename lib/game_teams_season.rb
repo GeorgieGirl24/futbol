@@ -123,10 +123,14 @@ class GameTeamsSeason < GameTeamsManager
   end
 
   def most_tackles(season_id)
-    teams_hash_w_tackles(season_id).max_by { |team, tackles| tackles }.to_a[0]
+    teams_hash_w_tackles(season_id).max_by do |team, tackles|
+      tackles
+    end.to_a[0]
   end
 
   def fewest_tackles(season_id)
-    teams_hash_w_tackles(season_id).min_by { |team, tackles| tackles }.to_a[0]
+    teams_hash_w_tackles(season_id).min_by do |team, tackles|
+      tackles
+    end.to_a[0]
   end
 end
