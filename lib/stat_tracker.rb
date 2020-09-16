@@ -2,12 +2,16 @@ require 'csv'
 require_relative './game_manager'
 require_relative './game_teams_manager'
 require_relative './team_manager'
+require_relative './season_statistics_manager'
+require_relative './team_statistics_manager'
 # require_relative './helper_class'
 
 class StatTracker
   attr_reader :games_manager,
               :teams_manager,
-              :game_teams_manager
+              :game_teams_manager,
+              :season_statistics_manager,
+              :team_statistics_manager
 
   def self.from_csv(locations)
     StatTracker.new(locations)
@@ -21,6 +25,8 @@ class StatTracker
     @games_manager = GamesManager.new(locations[:games], self)
     @game_teams_manager = GameTeamsManager.new(locations[:game_teams], self)
     @teams_manager = TeamsManager.new(locations[:teams], self)
+    @season_statistics_manager = SeasonStatisticsManager.new(self)
+    @team_statistics_manager = TeamStatisticsManager.new(self)
   end
 
   # Game Statistics
@@ -87,11 +93,11 @@ class StatTracker
 
   # Season Statistics
   def winningest_coach(season_id)
-    @game_teams_manager.winningest_coach(season_id)
+    @season_statistics_manager.winningest_coach(season_id)
   end
 
   def worst_coach(season_id)
-    @game_teams_manager.worst_coach(season_id)
+    @season_statistics_manager.worst_coach(season_id)
   end
 
   def most_accurate_team(season_id)
@@ -153,6 +159,14 @@ class StatTracker
     @games_manager.find_season_id(game_id)
   end
 
+  def find_all_seasons
+    @games_manager.find_all_seasons
+  end
+
+  def get_game_ids_in_season(season_id)
+    @games_manager.get_game_ids_in_season(season_id)
+  end
+
   def find_team_name(team_number)
     @teams_manager.find_team_name(team_number)
   end
@@ -164,24 +178,4 @@ class StatTracker
   def average_number_of_goals_scored_by_team_by_type(team_id, home_away)
     @game_teams_manager.average_number_of_goals_scored_by_team_by_type(team_id, home_away)
   end
-
-  # def get_best_season(team_id)
-  #   @game_teams_manager.get_best_season(team_id)
-  # end
-  #
-  # def get_worst_season(team_id)
-  #   @game_teams_manager.get_worst_season(team_id)
-  # end
-  #
-  # def get_average_win_percentage(team_id)
-  #   @game_teams_manager.get_average_win_percentage(team_id)
-  # end
-  #
-  # def get_favorite_opponent(team_id)
-  #   @game_teams_manager.get_favorite_opponent(team_id)
-  # end
-  #
-  # def get_rival(team_id)
-  #   @game_teams_manager.get_rival(team_id)
-  # end
 end

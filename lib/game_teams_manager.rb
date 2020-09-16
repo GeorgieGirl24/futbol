@@ -8,6 +8,10 @@ class GameTeamsManager
     create_games(game_teams_path)
   end
 
+  # def self.get_game_teams
+  #   @game_teams
+  # end
+
   def create_games(game_teams_path)
     game_teams_data = CSV.parse(File.read(game_teams_path), headers: true)
     @game_teams = game_teams_data.map do |data|
@@ -51,58 +55,71 @@ class GameTeamsManager
     @tracker.find_season_id(game_id)
   end
 
-  def selected_season_game_teams(season_id)
+  def game_ids_in_season(season_id)
+    @tracker.get_game_ids_in_season(season_id)
+  end
+
+  def game_teams_in_season(season_id)
     @game_teams.select do |game_team|
-      game_team.season_id == season_id
+      game_ids_in_season(season_id).include?(game_team.game_id)
     end
   end
 
-  def wins_for_coach(season_id, head_coach)
-    selected_season_game_teams(season_id).count do |game_team|
-      game_team.result == 'WIN' if game_team.head_coach == head_coach
-    end
-  end
-
-  def games_for_coach(season_id, head_coach)
-    selected_season_game_teams(season_id).count do |game_team|
-      game_team.head_coach == head_coach
-    end
-  end
-
-  def average_win_percentage_by_season(season_id, head_coach)
-    ((wins_for_coach(season_id, head_coach).to_f / games_for_coach(season_id, head_coach)) * 100).round(2)
-  end
-
-  def coaches_hash_w_avg_win_percentage(season_id)
-    by_coach_wins = {}
-    selected_season_game_teams(season_id).each do |game_team|
-      head_coach = game_team.head_coach
-      by_coach_wins[head_coach] ||= []
-      by_coach_wins[head_coach] = average_win_percentage_by_season(season_id, head_coach)
-    end
-    by_coach_wins
-  end
-
-  def winningest_coach(season_id)
-    coaches_hash_w_avg_win_percentage(season_id).max_by do |coach, avg_win_perc|
-      avg_win_perc
-    end.to_a[0]
-  end
-
-  def worst_coach(season_id)
-    coaches_hash_w_avg_win_percentage(season_id).min_by do |coach, avg_win_perc|
-      avg_win_perc
-    end.to_a[0]
+  # def game_teams_in_season(season_id)
+  #   @game_teams.select do |game_team|
+  #     game_team.season_id == season_id
+  #   end
+  # end
+  #
+  # def wins_for_coach(season_id, head_coach)
+  #   game_teams_in_season(season_id).count do |game_team|
+  #     game_team.result == 'WIN' if game_team.head_coach == head_coach
+  #   end
+  # end
+  #
+  # def games_for_coach(season_id, head_coach)
+  #   game_teams_in_season(season_id).count do |game_team|
+  #     game_team.head_coach == head_coach
+  #   end
+  # end
+  #
+  # def average_win_percentage_by_season(season_id, head_coach)
+  #   ((wins_for_coach(season_id, head_coach).to_f / games_for_coach(season_id, head_coach)) * 100).round(2)
+  # end
+  #
+  # def coaches_hash_w_avg_win_percentage(season_id)
+  #   by_coach_wins = {}
+  #   game_teams_in_season(season_id).each do |game_team|
+  #     head_coach = game_team.head_coach
+  #     by_coach_wins[head_coach] ||= []
+  #     by_coach_wins[head_coach] = average_win_percentage_by_season(season_id, head_coach)
+  #   end
+  #   by_coach_wins
+  # end
+  #
+  # def winningest_coach(season_id)
+  #   coaches_hash_w_avg_win_percentage(season_id).max_by do |coach, avg_win_perc|
+  #     avg_win_perc
+  #   end.to_a[0]
+  # end
+  #
+  # def worst_coach(season_id)
+  #   coaches_hash_w_avg_win_percentage(season_id).min_by do |coach, avg_win_perc|
+  #     avg_win_perc
+  #   end.to_a[0]
+  # end
+  def find_all_seasons
+    @tracker.find_all_seasons
   end
 
   def list_teams_in_season(season_id)
-    selected_season_game_teams(season_id).map do |game_team|
+    game_teams_in_season(season_id).map do |game_team|
       game_team.team_id
     end.uniq
   end
 
   def list_game_teams_season_team(season_id, team_id)
-    selected_season_game_teams(season_id).select do |game_team|
+    game_teams_in_season(season_id).select do |game_team|
       game_team.team_id == team_id
     end
   end
@@ -173,7 +190,7 @@ class GameTeamsManager
 
   def games_played_by_team_by_season(season, team_id)
     games_played(team_id).select do |game_team|
-      game_team.season_id == season
+      game_ids_in_season(season).include?(game_team.game_id)
     end
   end
 
@@ -190,9 +207,10 @@ class GameTeamsManager
   def season_win_percentage_hash(team_id)
     season_hash = {}
     games_played(team_id).each do |game_team|
-      season = game_team.season_id
-      season_hash[season] ||= []
-      season_hash[season] = avg_win_pct_season(season, team_id)
+      find_all_seasons.each do |season|
+        season_hash[season] ||= []
+        season_hash[season] = avg_win_pct_season(season, team_id)
+      end
     end
     season_hash
   end

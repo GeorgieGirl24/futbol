@@ -15,6 +15,24 @@ class GamesManager
     end
   end
 
+  def find_all_seasons
+    @games.map do |game|
+      game.season
+    end.uniq
+  end
+
+  def find_games_in_season(season_id)
+    @games.select do |game|
+      game.season == season_id
+    end
+  end
+
+  def get_game_ids_in_season(season_id)
+    find_games_in_season(season_id).map do |game|
+      game.game_id
+    end
+  end
+
   def highest_total_score
     @games.max_by do |game|
       game.total_score

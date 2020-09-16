@@ -25,6 +25,17 @@ class GamesManagerTest < Minitest::Test
     assert_instance_of GamesManager, @games_manager
   end
 
+  def test_it_can_get_games_ids_in_season
+    season_id = '20122013'
+    expected = ['2012030221', '2012030222', '2012030223', '2012030224', '2012030225', '2012030311', '2012030312']
+    assert_equal expected, @games_manager.get_game_ids_in_season(season_id)
+  end
+
+  def test_it_can_find_games_in_a_season
+    season_id = '20122013'
+    assert_equal 7, @games_manager.find_games_in_season(season_id).count
+  end
+
   def test_it_can_find_the_highest_total_score
     assert_equal 6, @games_manager.highest_total_score
   end
@@ -87,5 +98,9 @@ class GamesManagerTest < Minitest::Test
   def test_it_can_find_season_id
     game_id = '2012030221'
     assert_equal '20122013', @games_manager.find_season_id(game_id)
+  end
+
+  def test_it_can_find_all_seasons
+    assert_equal ['20122013', '20152016'], @games_manager.find_all_seasons
   end
 end

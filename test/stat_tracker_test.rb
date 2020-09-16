@@ -187,4 +187,14 @@ class StatTrackerTest < Minitest::Test
     team_id = '6'
     assert_equal 'Houston Dynamo', @stat_tracker.rival(team_id)
   end
+
+  def test_it_can_get_games_ids_in_season
+    season_id = '20122013'
+    expected = ['2012030221', '2012030222', '2012030223', '2012030224', '2012030225', '2012030311', '2012030312']
+    assert_equal expected, @stat_tracker.get_game_ids_in_season(season_id)
+  end
+
+  def test_it_can_find_all_seasons
+    assert_equal ['20122013', '20152016'], @stat_tracker.find_all_seasons
+  end
 end
