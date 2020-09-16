@@ -20,6 +20,7 @@ class StatTracker
     @teams_manager = TeamsManager.new(locations[:teams], self)
     @game_teams_manager = GameTeamsManager.new(locations[:game_teams], self)
     @game_teams_season = GameTeamsSeason.new(locations[:game_teams], self)
+    @game_teams_league = GameTeamsLeague.new(locations[:game_teams], self)
   end
 
   # Game Statistics
@@ -61,27 +62,27 @@ class StatTracker
   end
 
   def best_offense
-    find_team_name(@game_teams_manager.best_offense)
+    find_team_name(@game_teams_league.best_offense)
   end
 
   def worst_offense
-    find_team_name(@game_teams_manager.worst_offense)
+    find_team_name(@game_teams_league.worst_offense)
   end
 
   def highest_scoring_visitor
-    find_team_name(@game_teams_manager.highest_scoring_visitor)
+    find_team_name(@game_teams_league.highest_scoring_visitor)
   end
 
   def lowest_scoring_visitor
-    find_team_name(@game_teams_manager.lowest_scoring_visitor)
+    find_team_name(@game_teams_league.lowest_scoring_visitor)
   end
 
   def highest_scoring_home_team
-    find_team_name(@game_teams_manager.highest_scoring_home)
+    find_team_name(@game_teams_league.highest_scoring_home)
   end
 
   def lowest_scoring_home_team
-    find_team_name(@game_teams_manager.lowest_scoring_home)
+    find_team_name(@game_teams_league.lowest_scoring_home)
   end
 
   # Season Statistics
