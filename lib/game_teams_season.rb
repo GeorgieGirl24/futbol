@@ -106,16 +106,20 @@ class GameTeamsSeason < GameTeamsManager
 
   def worst_coach(season_id)
     coaches_hash_avg_win_pct(season_id).min_by do |coach, avg_win|
-      avg_win 
+      avg_win
     end.to_a[0]
   end
 
   def most_accurate_team(season_id)
-    teams_hash_shots_goals(season_id).max_by do |team, goals_ratio| goals_ratio }.to_a[0]
+    teams_hash_shots_goals(season_id).max_by do |team, goals_ratio|
+      goals_ratio
+    end.to_a[0]
   end
 
   def least_accurate_team(season_id)
-    teams_hash_shots_goals(season_id).min_by do |team, goals_ratio| goals_ratio }.to_a[0]
+    teams_hash_shots_goals(season_id).min_by do |team, goals_ratio|
+      goals_ratio
+    end.to_a[0]
   end
 
   def most_tackles(season_id)
