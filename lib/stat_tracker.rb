@@ -1,6 +1,7 @@
 require 'csv'
 require_relative './game_manager'
 require_relative './game_teams_manager'
+require_relative './game_teams_season'
 require_relative './team_manager'
 
 class StatTracker
@@ -16,8 +17,9 @@ class StatTracker
 
   def load_managers(locations)
     @games_manager = GamesManager.new(locations[:games], self)
-    @game_teams_manager = GameTeamsManager.new(locations[:game_teams], self)
     @teams_manager = TeamsManager.new(locations[:teams], self)
+    @game_teams_manager = GameTeamsManager.new(locations[:game_teams], self)
+    @game_teams_season = GameTeamsSeason.new(locations[:game_teams], self)
   end
 
   # Game Statistics
@@ -84,27 +86,27 @@ class StatTracker
 
   # Season Statistics
   def winningest_coach(season_id)
-    @game_teams_manager.winningest_coach(season_id)
+    @game_teams_season.winningest_coach(season_id)
   end
 
   def worst_coach(season_id)
-    @game_teams_manager.worst_coach(season_id)
+    @game_teams_season.worst_coach(season_id)
   end
 
   def most_accurate_team(season_id)
-    find_team_name(@game_teams_manager.most_accurate_team(season_id))
+    find_team_name(@game_teams_season.most_accurate_team(season_id))
   end
 
   def least_accurate_team(season_id)
-    find_team_name(@game_teams_manager.least_accurate_team(season_id))
+    find_team_name(@game_teams_season.least_accurate_team(season_id))
   end
 
   def most_tackles(season_id)
-    find_team_name(@game_teams_manager.most_tackles(season_id))
+    find_team_name(@game_teams_season.most_tackles(season_id))
   end
 
   def fewest_tackles(season_id)
-    find_team_name(@game_teams_manager.fewest_tackles(season_id))
+    find_team_name(@game_teams_season.fewest_tackles(season_id))
   end
 
   #Team Statistics

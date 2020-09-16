@@ -17,8 +17,7 @@ class GameTeamsSeasonTest < Minitest::Test
       game_teams: game_teams_path
     }
     stat_tracker = StatTracker.from_csv(locations)
-    manager = GameTeamsManager.new(game_teams_path, stat_tracker)
-    @game_team_season = GameTeamsSeason.new(manager)
+    @game_team_season = GameTeamsSeason.new(game_teams_path, stat_tracker)
   end
 
   def test_it_can_find_season_id

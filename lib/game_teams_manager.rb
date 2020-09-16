@@ -1,16 +1,13 @@
 require 'csv'
 require_relative './game_team'
-require_relative './game_teams_season'
 require_relative './averageable'
 
 class GameTeamsManager
   include Averageable
-  attr_reader :game_teams, :tracker
   def initialize(game_teams_path, tracker)
     @game_teams = []
     @tracker = tracker
     create_games(game_teams_path)
-    create_helper
   end
 
   def create_games(game_teams_path)
@@ -20,28 +17,24 @@ class GameTeamsManager
     end
   end
 
-  def create_helper
-    GameTeamsSeason.new(self)
-  end
-
   def selected_season_game_teams(season_id)
     @game_teams.select do |game_team|
       find_season_id(game_team.game_id) == season_id
     end
   end
 
-  #Team
-
   def find_season_id(game_id)
     @tracker.find_season_id(game_id)
   end
 
-  # Copy 2 of games_played
   def games_played(team_id)
     @game_teams.select do |game_team|
       game_team.team_id == team_id
     end
   end
+
+  # Team
+  #Needs Games played and season ID
 
   def all_teams_for_game_id_list(team_id)
     @game_teams.select do |game_team|
@@ -140,12 +133,7 @@ class GameTeamsManager
   end
 
 # League
-  def games_played(team_id)
-    @game_teams.select do |game_team|
-      game_team.team_id == team_id
-    end
-  end
-
+# Needs Games played
   def games_played_by_type(team_id, home_away)
     @game_teams.select do |game_team|
       game_team.team_id == team_id && game_team.home_away == home_away

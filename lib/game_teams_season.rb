@@ -1,16 +1,23 @@
 require_relative './averageable'
-class GameTeamsSeason
+require_relative './game_team'
+require_relative './game_teams_manager'
+
+class GameTeamsSeason < GameTeamsManager
   include Averageable
-  def initialize(manager)
-    @manager = manager
+  def initialize(game_teams_path, tracker)
+    super(game_teams_path, tracker)
+  end
+
+  def create_games(game_teams_path)
+    super(game_teams_path)
   end
 
   def find_season_id(game_id)
-    @manager.find_season_id(game_id)
+    super
   end
 
   def selected_season_game_teams(season_id)
-    @manager.selected_season_game_teams(season_id)
+    super
   end
 
   def list_teams_in_season(season_id)
