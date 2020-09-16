@@ -4,25 +4,15 @@ require_relative './game_teams_manager'
 
 class GameTeamsSeason < GameTeamsManager
   include Averageable
-  def initialize(game_teams_path, tracker)
-    super(game_teams_path, tracker)
-  end
-
-  def create_games(game_teams_path)
-    super(game_teams_path)
-  end
-
-  def find_season_id(game_id)
-    super
-  end
-
-  def selected_season_game_teams(season_id)
-    super
-  end
-
   def list_teams_in_season(season_id)
     selected_season_game_teams(season_id).map do |game_team|
       game_team.team_id
+    end.uniq
+  end
+
+  def list_coaches_in_season(season_id)
+    selected_season_game_teams(season_id).map do |game_team|
+      game_team.head_coach
     end.uniq
   end
 
@@ -32,16 +22,16 @@ class GameTeamsSeason < GameTeamsManager
     end
   end
 
-  def wins_for_coach(season_id, head_coach)
-    selected_season_game_teams(season_id).count do |game_team|
-      game_team.result == 'WIN' if game_team.head_coach == head_coach
-    end.to_f
-  end
-
-  def games_for_coach(season_id, head_coach)
-    selected_season_game_teams(season_id).count do |game_team|
+  def game_teams_for_coach(season_id, head_coach)
+    selected_season_game_teams(season_id).select do |game_team|
       game_team.head_coach == head_coach
     end
+  end
+
+  def wins_for_coach(season_id, head_coach)
+    game_teams_for_coach(season_id, head_coach).count do |game_team|
+      game_team.result == 'WIN'
+    end.to_f
   end
 
   def shots_by_team(season_id, team_id)
@@ -63,22 +53,20 @@ class GameTeamsSeason < GameTeamsManager
   end
 
   def avg_wins_pct_for_coach(season_id, head_coach)
-    wins = wins_for_coach(season_id, head_coach)
-    games = games_for_coach(season_id, head_coach)
-    average(wins, games, 2)
+    games = game_teams_for_coach(season_id, head_coach)
+    average_with_count(wins_for_coach(season_id, head_coach), games)
   end
 
   def avg_ratio_goals_shots(season_id, team_id)
-    goals = goals_by_team(season_id, team_id)
-    shots = shots_by_team(season_id, team_id)
-    average(goals, shots)
+    # goals =
+    # shots =
+    average(goals_by_team(season_id, team_id), shots_by_team(season_id, team_id))
   end
 
   def coaches_hash_avg_win_pct(season_id)
     by_coach_wins = {}
-    selected_season_game_teams(season_id).each do |game_team|
-      head_coach = game_team.head_coach
-      by_coach_wins[head_coach] ||= []
+    list_coaches_in_season(season_id).each do |head_coach|
+      by_coach_wins[head_coach] ||= 0
       by_coach_wins[head_coach] = avg_wins_pct_for_coach(season_id, head_coach)
     end
     by_coach_wins
@@ -87,7 +75,7 @@ class GameTeamsSeason < GameTeamsManager
   def teams_hash_shots_goals(season_id)
     by_team_goals_ratio = {}
     list_teams_in_season(season_id).each do |team_id|
-      by_team_goals_ratio[team_id] ||= []
+      by_team_goals_ratio[team_id] ||= 0
       by_team_goals_ratio[team_id] = avg_ratio_goals_shots(season_id, team_id)
     end
     by_team_goals_ratio
@@ -96,7 +84,7 @@ class GameTeamsSeason < GameTeamsManager
   def teams_hash_w_tackles(season_id)
     tackles_by_team = {}
     list_teams_in_season(season_id).each do |team_id|
-      tackles_by_team[team_id] ||= []
+      tackles_by_team[team_id] ||= 0
       tackles_by_team[team_id] = tackles_by_team(season_id, team_id)
     end
     tackles_by_team

@@ -67,4 +67,8 @@ class GameTeamsManagerTest < Minitest::Test
     team_id = '6'
     assert_equal '3', @game_teams_manager.get_rival(team_id)
   end
+
+  def test_it_can_return_list_of_season_game_ids
+
+  end
 end

@@ -20,10 +20,6 @@ class GameTeamsLeagueTest < Minitest::Test
     @game_teams_league = GameTeamsLeague.new(game_teams_path, stat_tracker)
   end
 
-  def test_return_games_played_by_team
-    assert_equal 7, @game_teams_league.games_played('6').count
-  end
-
   def test_return_games_played_by_type
     assert_equal 3, @game_teams_league.games_played_by_type('3', 'away').count
     assert_equal 3, @game_teams_league.games_played_by_type('3', 'home').count
@@ -47,8 +43,8 @@ class GameTeamsLeagueTest < Minitest::Test
   end
 
   def test_average_number_of_goals_scored_by_team_by_type
-    assert_equal 1.67, @game_teams_league.avg_goals_team_type('3', 'away')
-    assert_equal 1.33, @game_teams_league.avg_goals_team_type('3', 'home')
+    assert_equal 1.6667, @game_teams_league.avg_goals_team_type('3', 'away')
+    assert_equal 1.3333, @game_teams_league.avg_goals_team_type('3', 'home')
   end
 
   def test_it_can_return_all_goal_all_teams_hash
@@ -80,6 +76,6 @@ class GameTeamsLeagueTest < Minitest::Test
   end
 
   def test_it_can_return_lowest_scoring_home
-    assert_equal '3', @game_teams_league.lowest_scoring_home
+    assert_equal '5', @game_teams_league.lowest_scoring_home
   end
 end

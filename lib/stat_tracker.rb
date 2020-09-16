@@ -1,12 +1,13 @@
 require 'csv'
 require_relative './game_manager'
+require_relative './team_manager'
 require_relative './game_teams_manager'
 require_relative './game_teams_season'
 require_relative './game_teams_league'
-require_relative './team_manager'
 
 class StatTracker
-  attr_reader :games_manager, :teams_manager, :game_teams_manager
+  attr_reader :games_manager, :teams_manager, :game_teams_manager,
+              :game_teams_season, :game_teams_league
 
   def self.from_csv(locations)
     StatTracker.new(locations)
@@ -20,8 +21,8 @@ class StatTracker
     @games_manager = GamesManager.new(locations[:games], self)
     @teams_manager = TeamsManager.new(locations[:teams], self)
     @game_teams_manager = GameTeamsManager.new(locations[:game_teams], self)
-    @game_teams_season = GameTeamsSeason.new(locations[:game_teams], self)
     @game_teams_league = GameTeamsLeague.new(locations[:game_teams], self)
+    @game_teams_season = GameTeamsSeason.new(locations[:game_teams], self)
   end
 
   # Game Statistics
@@ -147,6 +148,10 @@ class StatTracker
   # Helpers
   def find_season_id(game_id)
     @games_manager.find_season_id(game_id)
+  end
+
+  def list_of_season_game_ids(season_id)
+    @games_manager.list_of_season_game_ids(season_id)
   end
 
   def find_team_name(team_number)

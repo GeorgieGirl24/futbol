@@ -17,10 +17,20 @@ class GameTeamsManager
     end
   end
 
+  # def selected_season_game_teams(season_id)
+  #   @game_teams.select do |game_team|
+  #     find_season_id(game_team.game_id) == season_id
+  #   end
+  # end
+
   def selected_season_game_teams(season_id)
     @game_teams.select do |game_team|
-      find_season_id(game_team.game_id) == season_id
+      list_of_season_game_ids(season_id).include?(game_team.game_id)
     end
+  end
+
+  def list_of_season_game_ids(season_id)
+    @tracker.list_of_season_game_ids(season_id)
   end
 
   def find_season_id(game_id)
@@ -91,7 +101,7 @@ class GameTeamsManager
   def season_win_pct_hash(team_id)
     season_hash = {}
     list_seasons_played_by_team(team_id).each do |season, game_team|
-      season_hash[season] ||= []
+      season_hash[season] ||= 0
       season_hash[season] = avg_win_pct_per_season(season, team_id)
     end
     season_hash
@@ -99,7 +109,7 @@ class GameTeamsManager
 
   def opponent_hash(team_id)
     woohoo = {}
-    games_w_opponent_hash(team_id).map do |opp_team_id, game_team_obj|
+    games_w_opponent_hash(team_id).each do |opp_team_id, game_team_obj|
       tie_loss = game_team_obj.count do |game_team|
         game_team.result == 'LOSS' || game_team.result == 'TIE'
       end.to_f

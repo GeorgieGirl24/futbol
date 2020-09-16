@@ -4,18 +4,6 @@ require_relative './game_teams_manager'
 
 class GameTeamsLeague < GameTeamsManager
   include Averageable
-  def initialize(game_teams_path, tracker)
-    super(game_teams_path, tracker)
-  end
-
-  def create_games(game_teams_path)
-    super(game_teams_path)
-  end
-
-  def games_played(team_id)
-    super(team_id)
-  end
-
   def games_played_by_type(team_id, home_away)
     @game_teams.select do |game_team|
       game_team.team_id == team_id && game_team.home_away == home_away
@@ -47,7 +35,7 @@ class GameTeamsLeague < GameTeamsManager
   def avg_goals_team_type(team_id, home_away)
     goals = total_goals_by_type(team_id, home_away)
     games = games_played_by_type(team_id, home_away)
-    average_with_count(goals, games, 2)
+    average_with_count(goals, games)
   end
 
   def avg_goals_all_teams_hash
@@ -77,18 +65,22 @@ class GameTeamsLeague < GameTeamsManager
   end
 
   def highest_scoring_visitor
-    avg_goals_team_type_hash('away').max_by{ |team_id, avg_goals| avg_goals }.to_a[0]
+    hash = avg_goals_team_type_hash('away')
+    hash.max_by { |team_id, avg_goals| avg_goals }.to_a[0]
   end
 
   def lowest_scoring_visitor
-    avg_goals_team_type_hash('away').min_by{ |team_id, avg_goals| avg_goals }.to_a[0]
+    hash = avg_goals_team_type_hash('away')
+    hash.min_by { |team_id, avg_goals| avg_goals }.to_a[0]
   end
 
   def highest_scoring_home
-    avg_goals_team_type_hash('home').max_by{ |team_id, avg_goals| avg_goals }.to_a[0]
+    hash = avg_goals_team_type_hash('home')
+    hash.max_by { |team_id, avg_goals| avg_goals }.to_a[0]
   end
 
   def lowest_scoring_home
-    avg_goals_team_type_hash('away').min_by{ |team_id, avg_goals| avg_goals }.to_a[0]
+    hash = avg_goals_team_type_hash('home')
+    hash.min_by { |team_id, avg_goals| avg_goals }.to_a[0]
   end
 end

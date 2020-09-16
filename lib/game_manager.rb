@@ -99,6 +99,15 @@ class GamesManager
     average_goals_by_season
   end
 
+  def list_of_season_game_ids(season_id)
+    game_list = @games.select do |game|
+      game.season == season_id
+    end
+    game_list.map do |game|
+      game.game_id
+    end
+  end
+
   def find_season_id(game_id)
     @games.find do |game|
       game.game_id == game_id

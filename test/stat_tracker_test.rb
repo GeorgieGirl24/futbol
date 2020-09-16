@@ -94,7 +94,7 @@ class StatTrackerTest < Minitest::Test
   end
 
   def test_it_can_lowest_scoring_home
-    assert_equal 'Houston Dynamo', @stat_tracker.lowest_scoring_home_team
+    assert_equal 'Sporting Kansas City', @stat_tracker.lowest_scoring_home_team
   end
 
   def test_it_can_find_season_id
@@ -177,5 +177,9 @@ class StatTrackerTest < Minitest::Test
   def test_team_rival
     team_id = '6'
     assert_equal 'Houston Dynamo', @stat_tracker.rival(team_id)
+  end
+
+  def test_it_can_return_list_of_season_game_ids
+
   end
 end

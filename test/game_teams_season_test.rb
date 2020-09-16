@@ -20,16 +20,6 @@ class GameTeamsSeasonTest < Minitest::Test
     @game_team_season = GameTeamsSeason.new(game_teams_path, stat_tracker)
   end
 
-  def test_it_can_find_season_id
-    game_id = '2012030221'
-    assert_equal '20122013', @game_team_season.find_season_id(game_id)
-  end
-
-  def test_selected_season_game_teams
-    season_id = '20152016'
-    assert_equal 2, @game_team_season.selected_season_game_teams(season_id).count
-  end
-
   def test_it_can_list_teams_in_season
 
   end
@@ -38,16 +28,18 @@ class GameTeamsSeasonTest < Minitest::Test
 
   end
 
+  def test_it_can_list_coaches_in_season
+
+  end
+
+  def test_it_can_list_game_teams_for_coach
+
+  end
+
   def test_wins_for_coach
     season_id = '20122013'
     head_coach = 'Claude Julien'
     assert_equal 6.0, @game_team_season.wins_for_coach(season_id, head_coach)
-  end
-
-  def test_games_for_coach
-    season_id = '20152016'
-    head_coach = 'Mike Sullivan'
-    assert_equal 1, @game_team_season.games_for_coach(season_id, head_coach)
   end
 
   def test_shots_by_team
