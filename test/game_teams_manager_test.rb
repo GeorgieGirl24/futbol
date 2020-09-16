@@ -28,11 +28,6 @@ class GameTeamsManagerTest < Minitest::Test
     assert_equal 7, @game_teams_manager.games_played('6').count
   end
 
-  def test_selected_season_game_teams
-    season_id = '20152016'
-    assert_equal 2, @game_teams_manager.selected_season_game_teams(season_id).count
-  end
-
   def test_it_can_find_best_season_for_team
     team_id = '6'
     assert_equal '20122013', @game_teams_manager.get_best_season(team_id)

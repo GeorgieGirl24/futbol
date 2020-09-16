@@ -20,20 +20,34 @@ class GameTeamsSeasonTest < Minitest::Test
     @game_team_season = GameTeamsSeason.new(game_teams_path, stat_tracker)
   end
 
-  def test_it_can_list_teams_in_season
+  def test_selected_season_game_teams
+    season_id = '20152016'
+    assert_equal 2, @game_team_season.selected_season_game_teams(season_id).count
+  end
 
+  def test_it_can_list_teams_in_season
+    season_id = '20152016'
+    assert_equal 2, @game_team_season.list_teams_in_season(season_id).count
+    refute_equal 4, @game_team_season.list_teams_in_season(season_id).count
   end
 
   def test_it_can_list_game_teams_season_team
-
+    season_id = '20122013'
+    team_id = '6'
+    assert_equal 7, @game_team_season.list_game_teams_season_team(season_id, team_id).count
+    refute_equal 10, @game_team_season.list_game_teams_season_team(season_id, team_id).count
   end
 
   def test_it_can_list_coaches_in_season
-
+    season_id = '20122013'
+    expected = ["John Tortorella", "Claude Julien", "Dan Bylsma"]
+    assert_equal expected, @game_team_season.list_coaches_in_season(season_id)
   end
 
   def test_it_can_list_game_teams_for_coach
-
+    season_id = '20122013'
+    head_coach = 'Claude Julien'
+    assert_equal 7, @game_team_season.game_teams_for_coach(season_id, head_coach).count
   end
 
   def test_wins_for_coach

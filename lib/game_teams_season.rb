@@ -4,6 +4,14 @@ require_relative './game_teams_manager'
 
 class GameTeamsSeason < GameTeamsManager
   include Averageable
+
+  def selected_season_game_teams(season_id)
+    game_ids = list_of_season_game_ids(season_id)
+    @game_teams.select do |game_team|
+      game_ids.include?(game_team.game_id)
+    end
+  end
+
   def list_teams_in_season(season_id)
     selected_season_game_teams(season_id).map do |game_team|
       game_team.team_id

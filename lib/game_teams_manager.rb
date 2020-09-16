@@ -17,18 +17,6 @@ class GameTeamsManager
     end
   end
 
-  # def selected_season_game_teams(season_id)
-  #   @game_teams.select do |game_team|
-  #     find_season_id(game_team.game_id) == season_id
-  #   end
-  # end
-
-  def selected_season_game_teams(season_id)
-    @game_teams.select do |game_team|
-      list_of_season_game_ids(season_id).include?(game_team.game_id)
-    end
-  end
-
   def list_of_season_game_ids(season_id)
     @tracker.list_of_season_game_ids(season_id)
   end
