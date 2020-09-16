@@ -2,6 +2,7 @@ require 'csv'
 require_relative './game_manager'
 require_relative './game_teams_manager'
 require_relative './game_teams_season'
+require_relative './game_teams_league'
 require_relative './team_manager'
 
 class StatTracker
