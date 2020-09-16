@@ -26,22 +26,25 @@ class GameTeamsLeagueTest < Minitest::Test
   end
 
   def test_it_can_return_teams_list
-
+    assert_equal ['3', '6', '5'], @game_teams_league.teams_list
+    refute_equal ['5', '3', '6'], @game_teams_league.teams_list
   end
 
   def test_return_total_goals_by_team
-    assert_equal 20, @game_teams_manager.total_goals('6')
-    refute_equal 2, @game_teams_manager.total_goals('6')
+    assert_equal 20.0, @game_teams_league.total_goals('6')
+    refute_equal 2.0, @game_teams_league.total_goals('6')
   end
 
   def test_average_number_of_goals_scored_by_team
     assert_equal 1.5, @game_teams_league.average_number_of_goals_scored_by_team('3')
+    refute_equal 2.3, @game_teams_league.average_number_of_goals_scored_by_team('3')
   end
 
   def test_return_total_goals_by_type
     assert_equal 5, @game_teams_league.total_goals_by_type('3', 'away')
     assert_equal 4, @game_teams_league.total_goals_by_type('3', 'home')
   end
+
 
   def test_average_number_of_goals_scored_by_team_by_type
     assert_equal 1.6667, @game_teams_league.avg_goals_team_type('3', 'away')
