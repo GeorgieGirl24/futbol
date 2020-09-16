@@ -23,7 +23,7 @@ class TeamManagerTest < Minitest::Test
 
   def test_finding_a_team
     team_id = '5'
-    assert_equal 'Sporting Kansas City', @team_manager.find_a_team(team_id).team_name
+    assert_equal '17', @team_manager.find_a_team(team_id).franchise_id
     assert_equal 'SKC', @team_manager.find_a_team(team_id).abbreviation
   end
 

@@ -87,7 +87,8 @@ class GamesManager
   end
 
   def average_goals_by_season_data(season)
-    average(total_goals_by_season(season), count_games_by_season[season].to_f, 2)
+    goals = total_goals_by_season(season)
+    average(goals, count_games_by_season[season].to_f, 2)
   end
 
   def average_goals_by_season

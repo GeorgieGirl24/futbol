@@ -45,7 +45,9 @@ class GameTeamsLeague < GameTeamsManager
   end
 
   def avg_goals_team_type(team_id, home_away)
-    average_with_count(total_goals_by_type(team_id, home_away), games_played_by_type(team_id, home_away), 2)
+    goals = total_goals_by_type(team_id, home_away)
+    games = games_played_by_type(team_id, home_away)
+    average_with_count(goals, games, 2)
   end
 
   def avg_goals_all_teams_hash

@@ -62,12 +62,24 @@ class GameTeamsSeason < GameTeamsManager
     end
   end
 
+  def avg_wins_pct_for_coach(season_id, head_coach)
+    wins = wins_for_coach(season_id, head_coach)
+    games = games_for_coach(season_id, head_coach)
+    average(wins, games, 2)
+  end
+
+  def avg_ratio_goals_shots(season_id, team_id)
+    goals = goals_by_team(season_id, team_id)
+    shots = shots_by_team(season_id, team_id)
+    average(goals, shots)
+  end
+
   def coaches_hash_avg_win_pct(season_id)
     by_coach_wins = {}
     selected_season_game_teams(season_id).each do |game_team|
       head_coach = game_team.head_coach
       by_coach_wins[head_coach] ||= []
-      by_coach_wins[head_coach] = average(wins_for_coach(season_id, head_coach), games_for_coach(season_id, head_coach), 2)
+      by_coach_wins[head_coach] = avg_wins_pct_for_coach(season_id, head_coach)
     end
     by_coach_wins
   end
@@ -76,7 +88,7 @@ class GameTeamsSeason < GameTeamsManager
     by_team_goals_ratio = {}
     list_teams_in_season(season_id).each do |team_id|
       by_team_goals_ratio[team_id] ||= []
-      by_team_goals_ratio[team_id] = average(goals_by_team(season_id, team_id), shots_by_team(season_id, team_id))
+      by_team_goals_ratio[team_id] = avg_ratio_goals_shots(season_id, team_id)
     end
     by_team_goals_ratio
   end

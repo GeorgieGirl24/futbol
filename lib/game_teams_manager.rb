@@ -82,11 +82,17 @@ class GameTeamsManager
     end
   end
 
+  def avg_win_pct_per_season(season, team_id)
+    wins = total_wins_team(season, team_id)
+    games = games_played_by_team_by_season(season, team_id)
+    average_with_count(wins, games)
+  end
+
   def season_win_pct_hash(team_id)
     season_hash = {}
     list_seasons_played_by_team(team_id).each do |season, game_team|
       season_hash[season] ||= []
-      season_hash[season] = average_with_count(total_wins_team(season, team_id), games_played_by_team_by_season(season, team_id))
+      season_hash[season] = avg_win_pct_per_season(season, team_id)
     end
     season_hash
   end
@@ -127,6 +133,8 @@ class GameTeamsManager
   end
 
   def get_average_win_pct(team_id)
-    average_with_count(total_wins_team_all_seasons(team_id), games_played(team_id), 2)
+    wins = total_wins_team_all_seasons(team_id)
+    games = games_played(team_id)
+    average_with_count(wins, games, 2)
   end
 end
