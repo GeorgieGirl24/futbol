@@ -1,8 +1,7 @@
-require "./test/test_helper"
+require './test/test_helper'
 require './lib/stat_tracker'
 require './lib/team_manager'
 require './lib/team'
-require 'pry';
 require 'mocha/minitest'
 
 class TeamManagerTest < Minitest::Test
