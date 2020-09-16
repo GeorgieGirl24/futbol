@@ -88,7 +88,7 @@ class GameTeamsSeasonTest < Minitest::Test
 
   def test_coaches_hash_w_avg_win_percentage
     season_id = '20152016'
-    expected = {'Mike Sullivan' => 1.0, 'Alain Vigneault' => 0.0}
+    expected = { 'Mike Sullivan' => 1.0, 'Alain Vigneault' => 0.0 }
     assert_equal expected, @game_team_season.coaches_hash_avg_win_pct(season_id)
   end
 

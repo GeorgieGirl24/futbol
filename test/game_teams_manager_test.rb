@@ -26,7 +26,7 @@ class GameTeamsManagerTest < Minitest::Test
 
   def test_it_can_return_list_of_season_game_ids
     season_id = '20122013'
-    expected = ["2012030221", "2012030222", "2012030223", "2012030224", "2012030225", "2012030311", "2012030312"]
+    expected = ['2012030221', '2012030222', '2012030223', '2012030224', '2012030225', '2012030311', '2012030312']
     assert_equal expected, @game_teams_manager.list_of_season_game_ids(season_id)
   end
 
@@ -58,8 +58,8 @@ class GameTeamsManagerTest < Minitest::Test
 
   def test_game_ids_played_by_team
     team_id = '5'
-    expected = ["2012030311", "2012030312", "2015030143"]
-    unexpected = ["2012030311", "2012030312", "2015030143", "2012030313"]
+    expected = ['2012030311', '2012030312', '2015030143']
+    unexpected = ['2012030311', '2012030312', '2015030143', '2012030313']
     assert_equal expected, @game_teams_manager.game_ids_played_by_team(team_id)
     refute_equal unexpected, @game_teams_manager.game_ids_played_by_team(team_id)
   end

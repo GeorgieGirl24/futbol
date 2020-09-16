@@ -1,4 +1,4 @@
-require "./test/test_helper"
+require './test/test_helper'
 require './lib/game_manager'
 require 'mocha/minitest'
 require './lib/stat_tracker'
@@ -37,14 +37,14 @@ class GamesManagerTest < Minitest::Test
   end
 
   def test_it_can_populate_a_list_of_seasons
-    expected = ["20122013","20152016"]
+    expected = ['20122013','20152016']
     assert_equal expected, @games_manager.list_of_seasons
   end
 
   def test_it_can_count_games_by_season
     expected = {
-      "20122013" => 7,
-      "20152016" => 1
+      '20122013' => 7,
+      '20152016' => 1
     }
     assert_equal expected, @games_manager.count_games_by_season
   end
@@ -69,15 +69,15 @@ class GamesManagerTest < Minitest::Test
 
   def test_it_can_find_average_goals_by_season
     expected = {
-      "20122013" => 4.86,
-      "20152016" => 4.0
+      '20122013' => 4.86,
+      '20152016' => 4.0
     }
     assert_equal expected, @games_manager.average_goals_by_season
   end
 
   def test_it_can_return_list_of_season_game_ids
-    season_id = "20122013"
-    expected = ["2012030221", "2012030222", "2012030223", "2012030224", "2012030225", "2012030311", "2012030312"]
+    season_id = '20122013'
+    expected = ['2012030221', '2012030222', '2012030223', '2012030224', '2012030225', '2012030311', '2012030312']
     assert_equal expected, @games_manager.list_of_season_game_ids(season_id)
   end
 

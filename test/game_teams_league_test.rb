@@ -51,16 +51,16 @@ class GameTeamsLeagueTest < Minitest::Test
   end
 
   def test_avg_goals_all_teams_hash
-    expected = {"3"=>1.5, "6"=>2.86, "5"=>1.33}
+    expected = {'3'=>1.5, '6'=>2.86, '5'=>1.33}
     assert_equal expected, @game_teams_league.avg_goals_all_teams_hash
   end
 
   def test_avg_goals_team_type_hash
     home_away = 'away'
-    expected = {"3"=>1.6667, "6"=>2.75, "5"=>3.0}
+    expected = { '3' => 1.6667, '6' => 2.75, '5' =>3.0 }
     assert_equal expected, @game_teams_league.avg_goals_team_type_hash(home_away)
     home_away = 'home'
-    expected_1 = {"3"=>1.3333, "6"=>3.0, "5"=>0.5}
+    expected_1 = { '3' =>1.3333, '6' => 3.0, '5' => 0.5}
     assert_equal expected_1, @game_teams_league.avg_goals_team_type_hash(home_away)
   end
 
